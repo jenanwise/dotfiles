@@ -1,0 +1,28 @@
+#!/bin/bash
+dirs_loc="$HOME/src"
+
+arg=$1
+
+for dir in "$dirs_loc"/*; do
+    pushd "$dir" >/dev/null
+    remote=$(git remote -v 2>/dev/null)
+    if [ $? = 0 ]; then
+        origin=$(echo "$remote" | grep origin | head -n1 | cut -f2 | cut -f1 -d" ")
+        if [[ "$origin" == *Dropbox* ]]; then
+            diff_index=$(git diff-index --quiet HEAD --)
+            if [ $? = 1 ]; then
+                path=$(realpath $dir)
+                repo_name=$(basename $path)
+                if [[ "$arg" == "-l" ]]; then
+                    echo $repo_name
+                else
+                    echo
+                    echo "$repo_name"
+                    echo "=========================="
+                    git status
+                fi
+            fi
+        fi
+    fi
+    popd >/dev/null
+done

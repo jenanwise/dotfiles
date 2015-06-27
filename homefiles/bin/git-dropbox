@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+set -u
+
+repo="`git rev-parse --show-toplevel`"
+reponame="$(basename "$repo")"
+dboxroot="$HOME/Dropbox/src"
+mkdir -p "$dboxroot"
+dboxdir="$dboxroot/$reponame.git"
+
+if [ ! -e "$dboxdir" ]; then
+    cd "$dboxroot"
+    git clone --bare "$repo"
+    cd "$repo"
+fi
+if [ ! `git remote | grep dropbox` ]; then
+    git remote add dropbox "$dboxdir"
+    echo "Added remote \"dropbox\" at \"$dboxdir\""
+fi
+if [ ! `git remote | grep origin` ]; then
+    git remote add -m master origin "$dboxdir"
+    git remote set-branches origin master
+    git push -u origin master
+    echo "Added remote \"origin\" at \"$dboxdir\""
+fi

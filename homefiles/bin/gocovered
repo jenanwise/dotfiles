@@ -1,0 +1,6 @@
+#!/bin/bash
+set -x
+set -e
+tmp=$(mktemp -t cover)
+godep go test -coverprofile="$tmp" "./$1/..."
+go tool cover -html="$tmp"

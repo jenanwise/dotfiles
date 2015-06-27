@@ -1,0 +1,125 @@
+---
+- hosts: localhost
+  vars:
+    user: "{{ lookup('env','USER') }}"
+    home_dir: "{{ lookup('env','HOME') }}"
+    gopath: "{{ home_dir }}/src/go"
+    backup_dir: "{{ inventory_dir }}/backups"
+    applications:
+      - 1password
+      - alfred
+      - amazon-music
+      - chromecast
+      - colloquy
+      - dropbox
+      - firefox
+      - flux
+      - font-inconsolata
+      - font-source-code-pro
+      - google-chrome
+      - google-drive
+      - keepingyouawake
+      - paw
+      - iterm2
+      - skype
+      - slack
+      - vagrant
+      - virtualbox
+      - vlc
+    home: "/Users/{{ whoami.stdout }}"
+    src_home: "/Users/{{ whoami.stdout }}/src"
+    taps:
+      - caskroom/fonts
+      - homebrew/dupes
+      - homebrew/science
+      - railwaycat/emacsmacport
+    python_packages:
+      - ipython
+      - autopep8
+      - flake8
+      - pep8
+      - pyflakes
+    go_packages:
+      - github.com/golang/lint/golint
+      - github.com/k0kubun/pp
+      - github.com/motemen/gore
+      - github.com/nsf/gocode
+    homefiles:
+      agignore: .agignore
+      bashrc: .bashrc
+      bin: bin
+      clj: .clj
+      gitconfig: .gitconfig
+      gitignore: .gitignore
+      inputrc: .inputrc
+      iterm2: .iterm2
+      lein-profiles.clj: .lein/profiles.clj
+      spacemacs: .spacemacs
+      tmux.conf: .tmux.conf
+      vim: .vim
+      vimrc: .vimrc
+    brews:
+      ansible: 
+      ant: 
+      aspell:
+      autoconf: 
+      automake: 
+      bash-completion: 
+      boot2docker: 
+      colordiff: 
+      coreutils: 
+      curl: 
+      docker: 
+      dtrx:
+      dynamodb-local:
+      emacs-mac: with-spacemacs-icon
+      fasd: 
+      ffmpeg: 
+      findutils: with-default-names
+      flac: 
+      fpp:
+      fswatch: 
+      gcc: 
+      gdb: with-homebrewed-python,with-all-targets
+      git: 
+      gnu-sed: 
+      gnupg: with-default-names
+      go: 
+      graphicsmagick: 
+      httpie:
+      ispell: 
+      jasper: 
+      jpeg: 
+      jq: 
+      lame: 
+      libyaml: 
+      llvm: with-lld,with-clang,with-rtti
+      mercurial: 
+      nmap: 
+      node: 
+      phantomjs: 
+      postgresql: 
+      python: 
+      rbenv: 
+      reattach-to-user-namespace: wrap-pbcopy-and-pbpaste
+      redis: 
+      rlwrap: 
+      ruby: 
+      ruby-build:
+      sqlite: 
+      the_silver_searcher: 
+      tmux: 
+      tree: 
+      unrar: 
+      vim: without-ruby,with-python3
+      watch: 
+      wget: 
+      youtube-dl:
+      yuicompressor: 
+  tasks:  
+    - include: tasks/files.yml
+    - include: tasks/preferences.yml
+    - include: tasks/homebrew.yml
+    - include: tasks/python.yml
+    - include: tasks/go.yml
+    - include: tasks/clojure.yml

@@ -1,0 +1,32 @@
+[include]
+    path = ~/.gitlocal
+[color]
+    diff = auto
+    branch = auto
+    interactive = auto
+    status = always
+    ui = always
+[core]
+    excludesfile = ~/.gitignore
+    editor = vim
+
+[alias]
+    st = status -s
+    stf = ! (git status --short | cut -d\\   -f3)
+    dfc = diff --cached
+    dfw = diff --word-diff
+    co = checkout
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%Cblue%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    oneline = log --pretty=oneline
+    names = log --name-only
+    alog = log --abbrev-commit
+    todo = grep --heading --line-number --break -e "FIXME" -e "TODO" -e "XXX"
+    b = branch
+[branch]
+    autosetuprebase = always
+[push]
+    default = upstream
+[github]
+    user = jenanwise
+[status]
+    relativePaths = true

@@ -1,0 +1,5 @@
+#!/bin/bash
+for b in $(brew list -1); do
+    options=$(brew info "$b" | grep "Built from source with:" | cut -d" " -f7-)
+    echo "$b: $options"
+done

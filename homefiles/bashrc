@@ -1,0 +1,152 @@
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+
+## Bash settings
+
+# check the window size after each command and, if necessary, update the values
+# of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# vi bindings
+set -o vi
+
+
+## Environment Vars
+
+export GOPATH="$HOME/src/go"
+
+USERPATH=\
+"$HOME/bin":\
+"$HOME/.local/bin":\
+"$HOME/node_modules/.bin":\
+"$GOPATH/bin"
+
+if which /usr/local/bin/brew >/dev/null; then
+    BREWPREFIX="$(/usr/local/bin/brew --prefix)"
+    EMACSPATH="$(/usr/local/bin/brew --prefix emacs-mac)/bin"
+    BREWPATH="$BREWPATH/share/npm/bin":$EMACSPATH:"$BREWPATH/opt/coreutils/libexec/gnubin"
+else
+    BREWPATH=""
+fi
+
+SYSPATH="/usr/local/bin"
+
+export PATH=\
+$USERPATH:\
+$BREWPATH:\
+$SYSPATH:\
+$PATH
+
+export REALHOST=${HOSTNAME%%.*} # Strip off ".local", ".lan", etc. that OSX puts in
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+export EDITOR="emacsclient -n"
+export LESS="-i -g -M -R -x4 -X -f -F -z-1"
+export HISTCONTROL=ignoredups
+export GIT_PS1_SHOWDIRTYSTATE=
+export GIT_PS1_SHOWSTASHSTATE=1
+export VIRTUALENV_USE_DISTRIBUTE=1
+export LEIN_FAST_TRAMPOLINE=y
+export CLOJURE_USER_LIB="$HOME/.clj"
+export AWS_SECRET_ACCESS_KEY=
+export AWS_ACCESS_KEY_ID=
+
+
+## Platform-specific setup
+
+if [ `uname` = "Darwin" ]; then
+    alias shred="/bin/rm -P"
+    BREWBASHCOMPLETION="$BREWPREFIX/etc/bash_completion"
+    if [ -f "$BREWBASHCOMPLETION" ]; then
+        . "$BREWBASHCOMPLETION"
+    fi
+else
+    alias open=`which gnome-open || echo "xdg-open"`
+    alias xpaste='xsel -o'
+fi
+
+## Bash compltion
+
+[[ -f /etc/bash_completion ]] && source /etc/bash_completion
+[[ -f ~/.bash_completion ]] && source ~/.bash_completion
+
+# make "g" complete like "git"
+complete -o bashdefault -o default -o nospace -F _git g 2>/dev/null \
+    || complete -o default -o nospace -F _git g
+
+
+## The Prompt
+
+# Includes git branch if available.
+# User prompt is colored by host.
+# root is always red.
+if [ "$USER" = root ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    MAINCOLOR=34;
+    if [ -n "`type -t __git_ps1`" ]; then
+        PS1='\[\033[01;33m\]$(__git_ps1 "(%s) ")\[\033[01;${MAINCOLOR}m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$ '
+    else
+        PS1='\[\033[01;${MAINCOLOR}m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$ '
+    fi
+fi
+
+
+## Aliasses
+
+alias cdc="cd \`pwd -P\`"
+alias cleanbak='find . -name "*.bak" -exec rm {} \;'
+alias cleanpyc='find . -name "*.pyc" -exec rm {} \;'
+alias cleanvim='rm $HOME/.viminfo'
+alias e="edit"
+alias g='git'
+alias groot='cd "`git rev-parse --show-toplevel`"'
+alias gorerun='rerun -c --pattern="**/*.go"'
+alias h="http"
+alias httpd="python -m SimpleHTTPServer"
+alias ll='ls -l'
+alias lx="awk '{ print NR \"\\t\" \$0 }'"  # print 1-based line numbers
+alias path='echo $PATH | tr : "\n"'
+alias subup='(cd `git rev-parse --show-toplevel` && git submodule update)'
+
+
+## Ruby
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+
+## Color support for `ls`
+#
+# BSD systems have only single-char flags, so -G replaces --color
+# To check for this, we run "ls --version" and check the return status.
+# BSD's ls will complain and give a non-zero exit status, but Linux's ls
+# will happily return with status=0.
+
+if [ "$TERM" != "dumb" ]; then
+    ls --version 2&>/dev/null
+    if [ "$?" = "0" ]; then
+        eval "`dircolors -b`"
+        alias ls='ls --color=auto'
+    else
+        alias ls='ls -G'
+    fi
+fi
+
+## fasd/autojump
+eval "$(fasd --init auto)"
+alias j="fasd_cd -d"
+alias jj="fasd_cd -d -i"
+
+
+## SSH
+
+# Add all "id_*" private keys (ignores files ending in .pub) to the ssh agent.
+for keyfile in `find ~/.ssh -name "id_rsa" -not -name "*.pub"`; do
+    if [ "`ssh-add -l | grep "$keyfile" | wc -l`" = "0" ] ; then
+        ssh-add "$keyfile"
+    fi
+done
+
+
+## Private env settings
+
+[[ -f ~/.keys_env ]] && source ~/.keys_env

@@ -1,0 +1,24 @@
+---
+- name: Configure preferences
+  command: "{{ item }}"
+  with_items:
+    - chflags nohidden {{ home_dir }}/Library
+    - defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false # Key repeat
+    - defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+    - defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+    - defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+    - defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+    - defaults write com.apple.dock autohide -int 1
+    - defaults write com.apple.dock tilesize -int 34
+    - defaults write com.apple.finder DisableAllAnimations -bool true
+    - defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+    - defaults write com.apple.finder FXPreferredViewStyle -string 'Nlsv' # Default to list view
+    - defaults write com.apple.finder NewWindowTarget -string "PfHm"
+    - defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME"
+    - defaults write com.apple.finder QLEnableTextSelection -bool true
+    - defaults write com.apple.finder ShowPathbar -bool true
+    - defaults write com.apple.finder ShowRecentTags -bool false
+    - defaults write com.apple.finder ShowSidebar -bool true
+    - defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+    - defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -int 1
+    - defaults write com.googlecode.iterm2 PrefsCustomFolder "{{ home_dir }}/.iterm2"

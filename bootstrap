@@ -1,0 +1,18 @@
+#!/bin/sh
+set -x
+set -e
+
+# Get dotfiles
+dotfiles="$HOME/src/dotfiles"
+mkdir -p "$dotfiles"
+if [[ ! -d "$dotfiles" ]]; then
+    git clone git@github.com:jenanwise/dotfiles.git "$dotfiles"
+fi
+cd "$dotfiles"
+
+# Install homebrew
+which brew >/dev/null || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# Run ansible
+brew install ansible || brew upgrade ansible
+ansible-playbook -i hosts playbook.yml

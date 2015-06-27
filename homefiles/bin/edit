@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+if [ -z "$2" ]; then
+    line=0
+else
+    line=$2
+fi
+emacsclient -n +$line $1

@@ -1,0 +1,335 @@
+set nocompatible
+
+runtime! macros/matchit.vim
+runtime! ftplugin/man.vim
+set autoindent
+set background=dark
+set backspace=eol,indent,start
+set backupskip=/tmp/*,/private/tmp/*"
+set diffopt=vertical
+set directory=~/.vim/tmp,.
+set expandtab
+set foldcolumn=0
+set nofoldenable
+set hlsearch
+set ruler
+set iskeyword-==  " equals is not a keyword char!
+set laststatus=2
+set noshowmode
+set encoding=utf-8
+set modeline
+set modelines=2
+set noerrorbells
+set nosmartindent
+set nojoinspaces
+set nosmarttab
+set pastetoggle=<C-S-v>
+set noignorecase
+set nospell
+set number
+set numberwidth=4
+set noesckeys
+set scrolloff=3
+set scrolloff=3
+set shiftround
+set shiftwidth=4
+"set shortmess=at
+set shortmess=filmnrwxtToO
+set directory+=,~/tmp
+set ttimeoutlen=50
+set showmatch
+set softtabstop=4
+set splitbelow
+set splitright
+set tabstop=4
+set textwidth=79
+set viminfo+=%
+set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
+set fillchars+=stl:\ ,stlnc:\
+set wildmenu
+set wildmode=longest:full,list:full
+set wrap
+let mapleader = '\'
+let maplocalleader = '\'
+
+let g:Powerline_symbols = 'fancy'
+let g:sql_type_default = 'pgsql'
+
+" backslash space to clear search
+nnoremap <leader><space> :let @/=''<cr>
+
+" quick field access/brackets/lists
+"inoremap <C-f> []<Esc>i
+"inoremap <C-b> ['']<Esc>hi
+
+call pathogen#infect()
+syntax on
+filetype indent off
+filetype plugin on
+
+
+" Only use the fancy color scheme if we have 256 colors available
+" `export TERM=xterm-256color` if your term supports 256 colors
+" This must come after `syntax on`
+if &t_Co >= 256
+    colorscheme neverland
+
+    " some fixes
+    hi PreProc ctermfg=113
+    hi Define ctermfg=113
+    "hi Conditional cterm=bold ctermfg=161 gui=bold guifg=#d7005f
+    hi String term=underline ctermfg=173 guifg=#e5786d
+    hi Special term=bold ctermbg=NONE ctermfg=223 guifg=#ffdead
+    hi Function ctermfg=192 guifg=#caeb82
+    hi Comment term=bold ctermfg=239 gui=NONE guifg=#c0bc6c
+    hi clear ErrorMsg
+    hi link ErrorMsg Error
+    hi Error ctermfg=white ctermbg=red
+    hi Normal ctermfg=255
+
+    " for, in, try, except all highlight the same
+    hi clear Conditional
+    hi link Conditional Repeat
+    hi clear Exception
+    hi link Exception Repeat
+    hi link pythonOperator pythonConditional
+endif
+
+let g:slimv_keybindings = 0
+
+" OBSOLETE. POWERLINE IS BETTER.
+" This statusline is used if python is not available.
+" See python section below for preferred status line.
+" set statusline=%F%m%r%h%w\ (%Y)\ %=\ r%l,\ c%v\ [%p%%]
+
+function! SetFormatOptions()
+    set fo+=2 " use 2nd paragraph line for indent
+    set fo+=q " allow gq for formatting comments
+    set fo+=r " auto-instert comment leader on <Enter>
+    set fo+=1 " don't break lines after 1-letter words
+    set fo+=l " don't auto-break long lines
+    set fo-=o " don't auto instert comment leader on O or o
+    set fo-=c " don't auto-wrap comments
+    set fo-=t " don't auto-wrap text
+endfunction
+call SetFormatOptions()
+
+" Vim overwrites formatoptions, so we have to tell it to set these after it has
+" already loaded everything
+autocmd VimEnter * call SetFormatOptions()
+
+" Nicer TODO coloring (red FG, no annoying BG color)
+highlight Todo ctermfg=1 ctermbg=None cterm=bold
+
+function! SetTwoSpaceMode()
+    setlocal softtabstop=2
+    setlocal tabstop=2
+    setlocal shiftwidth=2
+endfunction
+
+function! SetFourSpaceMode()
+    setlocal softtabstop=4
+    setlocal tabstop=4
+    setlocal shiftwidth=4
+endfunction
+
+" Only have cursorline in the current buffer
+setlocal cursorline
+augroup cursorlines
+    autocmd BufEnter * setlocal cursorline
+    autocmd BufLeave * setlocal nocursorline
+    autocmd BufWinEnter * setlocal cursorline
+    autocmd BufWinLeave * setlocal nocursorline
+    autocmd ShellFilterPost * setlocal cursorline
+    autocmd WinEnter * setlocal cursorline
+    autocmd WinLeave * setlocal nocursorline
+augroup END
+
+" Remove inactive buffers
+"
+" The _CleanupBuffers() function does the work, but requires a redirect and the
+" "buffers" vim command to run.  Therefore, the wrapper function
+" CleanupBuffers() is used to call the _CleanupBuffers() command silently and
+" then report the number of removed buffers.
+function! _CleanupBuffers()
+    redir => buflist
+        buffers
+    redir END
+
+    let cleaned_buffers = 0
+    for buf in split(buflist, '\n')
+        " buf looks like this:
+        "  8  a   "~/.vim/plugin/bufexplorer.vim" line 446
+
+        " 'a' will be missing if the buffer is inactive
+        let is_inactive = buf[5] != 'a'
+
+        " split will get rid of the 1 or 2 leading whitespace if any
+        let buf_num = eval(split(buf[0:2], "")[0])
+
+        " delete inactive buffers
+        if is_inactive
+            execute "bdelete " buf_num
+            let cleaned_buffers += 1
+        endif
+    endfor
+    return cleaned_buffers
+endfunction
+function! CleanupBuffers()
+    silent let cleaned_buffers = _CleanupBuffers()
+    echo "Cleaned " . cleaned_buffers . " buffers."
+endfunction
+nmap <Leader>bc :call CleanupBuffers()<CR>
+
+" Diff-specific setup
+func! DiffSetup()
+    " Original version
+    setlocal nofoldenable
+    setlocal foldcolumn=0
+    setlocal number
+    setlocal nocursorline
+    setlocal readonly
+    setlocal nomodifiable
+    setlocal wrap
+
+    " Switch windows
+    wincmd b
+
+    " New version
+    setlocal nofoldenable
+    setlocal foldcolumn=0
+    setlocal number
+    setlocal wrap
+
+    nmap <C-n> :qa<CR>
+    wincmd =
+    winpos 0 0
+endfun
+if &diff
+    autocmd VimEnter * call DiffSetup()
+endif
+
+" jump to last position in a file when it is opened
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+
+" ===== PLUGIN SETTINGS =====
+let g:airline_powerline_fonts=1
+
+" syntastic
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_python_checkers=['pep8', 'pyflakes']
+let g:syntastic_ignore_files=['\.txt$', '\.html$']
+
+" jedi
+let g:jedi#popup_on_dot = 0
+let g:jedi#pydoc = "<leader>k"
+
+" bufexplorer
+let g:bufExplorerShowRelativePath=1
+let g:bufExplorerSortBy='fullpath'
+let g:bufExplorerSplitVertical=1
+
+" net_rw
+let g:netrw_http_cmd="curl -L -o"
+
+" NERDCommenter
+let NERDShutUp=1
+let g:NERDCustomDelimiters = {
+    \ 'htmldjango': { 'left': '{#', 'right': '#}' },
+\ }
+
+" NERDTree
+let NERDTreeIgnore=['\~$', '\.pyc$']
+let NERDTreeHijackNetrw = 0
+
+
+" ==== FILETYPE-SPECIFIC =====
+let python_highlight_space_errors=1
+au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+au FileType css setlocal iskeyword+=-
+au FileType html setlocal iskeyword+=-
+
+au FileType make set noexpandtab
+au FileType css call SetTwoSpaceMode()
+au FileType html call SetTwoSpaceMode()
+au FileType xhtml call SetTwoSpaceMode()
+au FileType django call SetTwoSpaceMode()
+au FileType django call SetTwoSpaceMode()
+au FileType htmldjango call SetTwoSpaceMode()
+
+
+" ==== ERROR CHECKING ====
+" Turn off line numbering for the error buffer
+au BufReadPost quickfix setlocal nonumber
+
+" F1: close the error window
+function! QFToggle()
+    for i in range(1, winnr('$'))
+        let bnum = winbufnr(i)
+        if getbufvar(bnum, '&buftype') == 'quickfix'
+            lclose
+            return
+        endif
+    endfor
+    botright lopen
+endfunction
+nmap <F1> :call QFToggle()<CR>
+imap <F1> <C-o>:call QFToggle()<CR>
+
+function! NextFuckingError()
+    if len(getloclist(0)) == 1
+        ll
+    else
+        lnext
+    endif
+endfunction
+
+function! PrevFuckingError()
+    if len(getloclist(0)) == 1
+        ll
+    else
+        lprev
+    endif
+endfunction
+
+" F2/F3: move between errors
+nmap <F3> :silent! call NextFuckingError()<CR>
+nmap <F2> :silent! call PrevFuckingError()<CR>
+nmap <F4> :silent! SyntasticCheck<CR>
+imap <F3> <C-o>:silent! call NextFuckingError()<CR>
+imap <F2> <C-o>:silent! call PrevFuckingError()<CR>
+imap <F4> <C-o>:silent! SyntasticCheck<CR>
+
+" ==== GENERAL MAPS, ABBREVS, AND SHORTCUTS ====
+" Remove all trailing whitespace with CTRL+G
+function! RemoveBadWhitespace()
+   %substitute/\s\+$//ge
+   %substitute/\([^ ]\)  \+=/\1 =/ge
+   %substitute///ge
+endfunction
+nmap <C-G> :call RemoveBadWhitespace()<CR>
+
+nnoremap <C-g> <Esc>
+vnoremap <C-g> <Esc>gV
+onoremap <C-g> <Esc>
+inoremap <C-g> <Esc>
+set timeoutlen=0
+
+function! Eatchar(pat)
+    let c = nr2char(getchar(0))
+    return (c =~ a:pat) ? '' : c
+endfunc
+
+"nmap o A<CR>
+"nmap <C-o> o<Esc>
+"nmap <C-S-o> O<Esc>
+nmap <C-n> :next<CR>
+nmap <C-p> :prev<CR>
+
+iabbrev ipdb# import ipdb; ipdb.set_trace()  # XXX
+iabbrev xpdb# import ipdb; ipdb.set_trace()  # XXX
+
+
+" ==== SPELL CHECKING ====
+map <F5> :setlocal spell! spelllang=en_us<CR>
+imap <F5> <C-o>:setlocal spell! spelllang=en_us<CR>
