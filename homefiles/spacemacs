@@ -2,7 +2,9 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;; (setq-default dotspacemacs-themes '(zenburn))
+;; Default to using full symbols for "*" and "#". This has to come before evil
+;; is loaded, so it can't go in config.
+(setq-default evil-symbol-word-search t)
 
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration."
@@ -214,6 +216,11 @@ layers configuration."
   ;; be nicer if it were a nop in non-evilified modes.
   (define-key evil-normal-state-map "q" nil)
   (define-key evil-normal-state-map "Q" 'evil-record-macro)
+
+  ;; Don't use spacemacs's special "#" and "*" auto-highlight-symbol search
+  ;; bindings. Prefer the evil defaults.
+  (define-key evil-normal-state-map (kbd "*") 'evil-search-word-forward)
+  (define-key evil-normal-state-map (kbd "#") 'evil-search-word-backward)
 
   ;; Override some keybindings.
   (evil-leader/set-key
