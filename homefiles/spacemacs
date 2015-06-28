@@ -24,6 +24,7 @@
      clojure
      dash
      emacs-lisp
+     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      git
      go
      html
@@ -45,7 +46,7 @@
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(rainbow-delimiters)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -162,32 +163,57 @@ before layers configuration."
   (setq-default git-magit-status-fullscreen t)
   )
 
+(defun set-two-space-mode ()
+  (setq-local evil-shift-width 2))
+
 (defun dotspacemacs/config ()
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+
+  ;; Allow cursore beyond end of line. Necessary for clojure evaling sexps until
+  ;; https://github.com/syl20bnr/spacemacs/issues/646 is fixed.
+  (setq evil-move-cursor-back nil)
+
+  ;; Additional filemode detections.
   (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
+
+  ;; Fix GOPATH until https://github.com/syl20bnr/spacemacs/pull/1878 is fixed.
+  (exec-path-from-shell-copy-env "GOPATH")
+
+  ;; Tell magit that we know what we're doing (ish).
   (setq magit-last-seen-setup-instructions "1.4.0")
+
+  ;; Turn on line numbers for all programming modes.
   (add-hook 'prog-mode-hook 'linum-mode)
+
+  ;; Shift + return to open a URL.
   (global-set-key (kbd "<S-return>") 'browse-url-at-point)
+
+  ;; Always start with evil-matchit mode. Spacemacs defaults to having it off.
   (global-evil-matchit-mode 1)
-  (add-hook 'enh-ruby-mode-hook
-            (lambda ()
-              (setq evil-shift-width 2)))
-  (add-hook 'ruby-mode-hook
-            (lambda ()
-              (setq evil-shift-width 2)))
-  (add-hook 'coffee-mode-hook
-            (lambda ()
-              (setq evil-shift-width 2)))
-  (add-hook 'yaml-mode-hook
-            (lambda ()
-              (setq evil-shift-width 2)))
+
+  ;; Two spaces for some langs.
+  (dolist (hook '(enh-ruby-mode-hook
+                  ruby-mode-hook
+                  coffee-mode-hook
+                  yaml-mode-hook))
+    (add-hook hook 'set-two-space-mode))
+
+  ;; Override some keybindings.
   (evil-leader/set-key
-    "of" 'sp-indent-defun)
+    "ofp" 'sp-indent-defun)
+  (evil-leader/set-key-for-mode 'cider-mode
+    "msn" 'cider-repl-set-ns
+    "ofb" 'cider-format-buffer)
   (evil-leader/set-key-for-mode 'go-mode
-    "of" 'fill-paragraph
-    "mgi" 'go-goto-imports))
+    "ofp" 'fill-paragraph
+    "mgi" 'go-goto-imports)
+
+  ;; Setup smartparens the way we like it.
+  (require 'smartparens-config)
+  (sp-use-paredit-bindings))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
