@@ -178,6 +178,9 @@ layers configuration."
   ;; https://github.com/syl20bnr/spacemacs/issues/646 is fixed.
   (setq evil-move-cursor-back nil)
 
+  ;; Suppress annoying startup messages that have to do with third-party packages redefining functions.
+  (setq ad-redefinition-action 'accept)
+
   ;; Additional filemode detections.
   (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
   (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
