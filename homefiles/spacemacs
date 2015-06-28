@@ -24,7 +24,6 @@
      clojure
      dash
      emacs-lisp
-     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      git
      go
      html
@@ -33,11 +32,13 @@
      org
      osx
      python
+     restclient
      ruby
      shell
      shell
      shell-scripts
      syntax-checking
+     version-control
      )
 
    ;; List of additional packages that will be installed wihout being
@@ -200,6 +201,19 @@ layers configuration."
                   coffee-mode-hook
                   yaml-mode-hook))
     (add-hook hook 'set-two-space-mode))
+
+  ;; Turn on aggressive-indent for lisps by default
+  (dolist (hook '(emacs-lisp-mode-hook
+                  clojure-mode-hook))
+    (add-hook hook #'aggressive-indent-mode))
+
+  ;; Use marked as external markdown viewer.
+  (setq markdown-open-command "marked")
+
+  ;; Rebind the macro key. Spacemacs and emacs like to use q for quit, and it'd
+  ;; be nicer if it were a nop in non-evilified modes.
+  (define-key evil-normal-state-map "q" nil)
+  (define-key evil-normal-state-map "Q" 'evil-record-macro)
 
   ;; Override some keybindings.
   (evil-leader/set-key
