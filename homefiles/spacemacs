@@ -2,10 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;; Default to using full symbols for "*" and "#". This has to come before evil
-;; is loaded, so it can't go in config.
-(setq-default evil-symbol-word-search t)
-
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration."
   (setq-default
@@ -36,7 +32,6 @@
      python
      restclient
      ruby
-     shell
      shell
      shell-scripts
      syntax-checking
@@ -80,13 +75,7 @@ before layers configuration."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(;;solarized-light
-                         ;;solarized-dark
-                         ;; spacemacs-light
-                         ;; spacemacs-dark
-                         ;;leuven
-                         ;;monokai
-                         zenburn)
+   dotspacemacs-themes '(zenburn)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -162,12 +151,28 @@ before layers configuration."
    ;; Not used for now.
    dotspacemacs-default-package-repository nil
    )
-  ;; User initialization goes here
+
   (setq-default git-magit-status-fullscreen t)
+  (setq-default ruby-version-manager 'rbenv)
+
+  ;; Default to using full symbols for "*" and "#".
+  (setq-default evil-symbol-word-search t)
   )
 
 (defun set-two-space-mode ()
   (setq-local evil-shift-width 2))
+
+(defun start-evil-ex-subs ()
+  "Start an evil-ex-mode substition."
+  (interactive)
+  (if (evil-visual-state-p)
+      (evil-ex "'<,'>s/")
+    (evil-ex "%s/")))
+
+(defun yell-save-pinky ()
+  "Yell at me about using vimmer crutches. Save the pinky!"
+  (interactive)
+  (message (propertize "Save your pinky! Use your SPC powers!" 'face '(:background "red"))))
 
 (defun dotspacemacs/config ()
   "Configuration function.
@@ -185,9 +190,6 @@ layers configuration."
   (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
   (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
 
-  ;; Fix GOPATH until https://github.com/syl20bnr/spacemacs/pull/1878 is fixed.
-  (exec-path-from-shell-copy-env "GOPATH")
-
   ;; Tell magit that we know what we're doing (ish).
   (setq magit-last-seen-setup-instructions "1.4.0")
 
@@ -199,6 +201,9 @@ layers configuration."
 
   ;; Always start with evil-matchit mode. Spacemacs defaults to having it off.
   (global-evil-matchit-mode 1)
+
+  ;; Start magit commit mode in insert mode.
+  (add-to-list 'evil-insert-state-modes 'git-commit-mode)
 
   ;; Two spaces for some langs.
   (dolist (hook '(enh-ruby-mode-hook
@@ -225,15 +230,45 @@ layers configuration."
   (define-key evil-normal-state-map (kbd "*") 'evil-search-word-forward)
   (define-key evil-normal-state-map (kbd "#") 'evil-search-word-backward)
 
-  ;; Override some keybindings.
+  ;; Always follow symlinks when under version control. Otherwise every time
+  ;; we edit the spacemacs file Emacs will yell at us.
+  (setq vc-follow-symlinks t)
+
+  ;; magit-blame-mode is read-only, so evilify it.
+  (evilify magit-blame-mode magit-blame-map)
+
+  ;; Use helm follow mode when using helm-ag, rather than having to C-c C-f
+  ;; every time.
+  (add-hook 'helm-before-initialize-hook
+            #'(lambda ()
+                (when (boundp 'helm-source-do-ag)
+                  (helm-attrset 'follow 1 helm-source-do-ag))))
+
+  ;; Don't use ex mode! Except for sub.
+  (define-key evil-motion-state-map ":" 'yell-save-pink)
+  (define-key evil-normal-state-map ":" 'yell-save-pinky)
+
+  ;; Don't use Ctrl-W for window commands. Prefer SPC w.
+  (dolist (map '(evil-motion-state-map
+                 evil-insert-state-map
+                 evil-emacs-state-map))
+    (define-key (eval map) "\C-w" 'yell-save-pinky))
+
+  ;; Custom SPC powers.
   (evil-leader/set-key
-    "ofp" 'sp-indent-defun)
+    "ofp" 'sp-indent-defun
+    "os" 'start-evil-ex-subs)
+
+  ;; Override some keybindings.
   (evil-leader/set-key-for-mode 'cider-mode
     "msn" 'cider-repl-set-ns
     "ofb" 'cider-format-buffer)
   (evil-leader/set-key-for-mode 'go-mode
     "ofp" 'fill-paragraph
     "mgi" 'go-goto-imports)
+
+  ;; Fix GOPATH until https://github.com/syl20bnr/spacemacs/pull/1878 is fixed.
+  (exec-path-from-shell-copy-env "GOPATH")
 
   ;; Setup smartparens the way we like it.
   (require 'smartparens-config)
