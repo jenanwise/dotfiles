@@ -21,3 +21,4 @@ logfile
 .sass-cache
 *-init.clj
 .projectile
+.tern-port
