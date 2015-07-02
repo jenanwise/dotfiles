@@ -157,6 +157,9 @@ before layers configuration."
 
   ;; Default to using full symbols for "*" and "#".
   (setq-default evil-symbol-word-search t)
+
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
   )
 
 (defun set-two-space-mode ()
@@ -169,10 +172,17 @@ before layers configuration."
       (evil-ex "'<,'>s/")
     (evil-ex "%s/")))
 
+(defun auto-follow-helm-ag ()
+  (when (boundp 'helm-source-do-ag)
+    (helm-attrset 'follow 1 helm-source-do-ag)))
+
 (defun yell-save-pinky ()
   "Yell at me about using vimmer crutches. Save the pinky!"
   (interactive)
   (message (propertize "Save your pinky! Use your SPC powers!" 'face '(:background "red"))))
+
+(defun no-smartparens ()
+  (smartparens-mode -1))
 
 (defun dotspacemacs/config ()
   "Configuration function.
@@ -209,12 +219,19 @@ layers configuration."
   (dolist (hook '(enh-ruby-mode-hook
                   ruby-mode-hook
                   coffee-mode-hook
-                  yaml-mode-hook))
+                  yaml-mode-hook
+                  web-mode))
     (add-hook hook 'set-two-space-mode))
 
-  ;; Turn on aggressive-indent for lisps by default
+  ;; Some modes are slow with smartparens.
+  (dolist (hook '(enh-ruby-mode-hook
+                  ruby-mode-hook))
+    (add-hook hook 'no-smartparens))
+
+  ;; Turn on aggressive-indent for some modes by default
   (dolist (hook '(emacs-lisp-mode-hook
-                  clojure-mode-hook))
+                  clojure-mode-hook
+                  yaml-mode-hook))
     (add-hook hook #'aggressive-indent-mode))
 
   ;; Use marked as external markdown viewer.
@@ -239,10 +256,7 @@ layers configuration."
 
   ;; Use helm follow mode when using helm-ag, rather than having to C-c C-f
   ;; every time.
-  (add-hook 'helm-before-initialize-hook
-            #'(lambda ()
-                (when (boundp 'helm-source-do-ag)
-                  (helm-attrset 'follow 1 helm-source-do-ag))))
+  (add-hook 'helm-before-initialize-hook 'auto-follow-helm-ag)
 
   ;; Don't use ex mode! Except for sub.
   (define-key evil-motion-state-map ":" 'yell-save-pink)
