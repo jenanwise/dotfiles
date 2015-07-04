@@ -204,7 +204,10 @@ before layers configuration."
 
   ;; Don't use ex mode! Except for sub.
   (define-key evil-motion-state-map ":" 'yell-save-pink)
-  (define-key evil-normal-state-map ":" 'yell-save-pinky))
+  (define-key evil-normal-state-map ":" 'yell-save-pinky)
+
+  ;; Use "SPC ;", not "M-;" for comments!
+  (global-set-key (kbd "M-;") nil))
 
 (defun magit-2-fixes ()
   (evil-leader/set-key "gb" 'magit-blame)
