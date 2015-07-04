@@ -205,9 +205,6 @@ layers configuration."
   (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
   (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
 
-  ;; Tell magit that we know what we're doing (ish).
-  (setq magit-last-seen-setup-instructions "1.4.0")
-
   ;; Turn on line numbers for all programming modes.
   (add-hook 'prog-mode-hook 'linum-mode)
 
@@ -227,6 +224,13 @@ layers configuration."
                   yaml-mode-hook
                   web-mode))
     (add-hook hook 'set-two-space-mode))
+
+  ;; Temporary fixes for Magit 2.1.0 issues.
+  (evil-leader/set-key "gb" 'magit-blame)
+  (define-key magit-blame-mode-map (kbd "C-n") 'magit-blame-next-chunk)
+  (define-key magit-blame-mode-map (kbd "C-p") 'magit-blame-previous-chunk)
+  (evil-make-overriding-map magit-blame-mode-map 'normal)
+  (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
 
   ;; Some modes are slow with smartparens.
   (dolist (hook '(enh-ruby-mode-hook
