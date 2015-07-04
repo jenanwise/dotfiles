@@ -189,10 +189,45 @@ before layers configuration."
 (defun no-smartparens ()
   (smartparens-mode -1))
 
+(defun rebind-evil-keys ()
+  "Rebind and unbind some evil keys for better ergonomics."
+
+  ;; Rebind the macro key. Spacemacs and emacs like to use q for quit, and it'd
+  ;; be nicer if it were a nop in non-evilified modes.
+  (define-key evil-normal-state-map "q" nil)
+  (define-key evil-normal-state-map "Q" 'evil-record-macro)
+
+  ;; Don't use spacemacs's special "#" and "*" auto-highlight-symbol search
+  ;; bindings. Prefer the evil defaults.
+  (define-key evil-normal-state-map (kbd "*") 'evil-search-word-forward)
+  (define-key evil-normal-state-map (kbd "#") 'evil-search-word-backward)
+
+  ;; Don't use ex mode! Except for sub.
+  (define-key evil-motion-state-map ":" 'yell-save-pink)
+  (define-key evil-normal-state-map ":" 'yell-save-pinky))
+
+(defun magit-2-fixes ()
+  (evil-leader/set-key "gb" 'magit-blame)
+  (use-package magit
+    :commands (magit-status
+               magit-blame-mode
+               magit-log
+               magit-commit)
+    :config
+    (progn
+      (define-key magit-blame-mode-map (kbd "C-n") 'magit-blame-next-chunk)
+      (define-key magit-blame-mode-map (kbd "C-p") 'magit-blame-previous-chunk)
+      (evil-make-overriding-map magit-blame-mode-map 'normal)
+      (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps))))
+
 (defun dotspacemacs/config ()
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+
+  (rebind-evil-keys)
+
+  (magit-2-fixes)
 
   ;; Allow cursore beyond end of line. Necessary for clojure evaling sexps until
   ;; https://github.com/syl20bnr/spacemacs/issues/646 is fixed.
@@ -225,13 +260,6 @@ layers configuration."
                   web-mode))
     (add-hook hook 'set-two-space-mode))
 
-  ;; Temporary fixes for Magit 2.1.0 issues.
-  (evil-leader/set-key "gb" 'magit-blame)
-  (define-key magit-blame-mode-map (kbd "C-n") 'magit-blame-next-chunk)
-  (define-key magit-blame-mode-map (kbd "C-p") 'magit-blame-previous-chunk)
-  (evil-make-overriding-map magit-blame-mode-map 'normal)
-  (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
-
   ;; Some modes are slow with smartparens.
   (dolist (hook '(enh-ruby-mode-hook
                   ruby-mode-hook))
@@ -246,16 +274,6 @@ layers configuration."
   ;; Use marked as external markdown viewer.
   (setq markdown-open-command "marked")
 
-  ;; Rebind the macro key. Spacemacs and emacs like to use q for quit, and it'd
-  ;; be nicer if it were a nop in non-evilified modes.
-  (define-key evil-normal-state-map "q" nil)
-  (define-key evil-normal-state-map "Q" 'evil-record-macro)
-
-  ;; Don't use spacemacs's special "#" and "*" auto-highlight-symbol search
-  ;; bindings. Prefer the evil defaults.
-  (define-key evil-normal-state-map (kbd "*") 'evil-search-word-forward)
-  (define-key evil-normal-state-map (kbd "#") 'evil-search-word-backward)
-
   ;; Always follow symlinks when under version control. Otherwise every time
   ;; we edit the spacemacs file Emacs will yell at us.
   (setq vc-follow-symlinks t)
@@ -266,10 +284,6 @@ layers configuration."
   ;; Use helm follow mode when using helm-ag, rather than having to C-c C-f
   ;; every time.
   (add-hook 'helm-before-initialize-hook 'auto-follow-helm-ag)
-
-  ;; Don't use ex mode! Except for sub.
-  (define-key evil-motion-state-map ":" 'yell-save-pink)
-  (define-key evil-normal-state-map ":" 'yell-save-pinky)
 
   ;; Don't use Ctrl-W for window commands. Prefer SPC w.
   (dolist (map '(evil-motion-state-map
