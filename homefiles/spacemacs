@@ -210,12 +210,8 @@ before layers configuration."
   (global-set-key (kbd "M-;") nil))
 
 (defun magit-2-fixes ()
-  (evil-leader/set-key "gb" 'magit-blame)
   (use-package magit
-    :commands (magit-status
-               magit-blame-mode
-               magit-log
-               magit-commit)
+    :commands (magit-blame-mode)
     :config
     (progn
       (evil-make-overriding-map magit-blame-mode-map 'normal)
@@ -251,7 +247,7 @@ layers configuration."
   (global-evil-matchit-mode 1)
 
   ;; Start magit commit mode in insert mode.
-  (add-to-list 'evil-insert-state-modes 'git-commit-mode)
+  (add-hook 'git-commit-mode-hook 'evil-insert-state)
 
   ;; Two spaces for some langs.
   (dolist (hook '(enh-ruby-mode-hook
@@ -278,9 +274,6 @@ layers configuration."
   ;; Always follow symlinks when under version control. Otherwise every time
   ;; we edit the spacemacs file Emacs will yell at us.
   (setq vc-follow-symlinks t)
-
-  ;; magit-blame-mode is read-only, so evilify it.
-  (evilify magit-blame-mode magit-blame-map)
 
   ;; Use helm follow mode when using helm-ag, rather than having to C-c C-f
   ;; every time.
