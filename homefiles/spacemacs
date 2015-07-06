@@ -99,6 +99,11 @@ before layers configuration."
    ;; By default the command key is `:' so ex-commands are executed like in Vim
    ;; with `:' and Emacs commands are executed with `<leader> :'.
    dotspacemacs-command-key ":"
+   ;; Location where to auto-save files. Possible values are `original' to
+   ;; auto-save the file in-place, `cache' to auto-save the file to another
+   ;; file stored in the cache directory and `nil' to disable auto-saving.
+   ;; Default value is `cache'.
+   dotspacemacs-auto-save-file-location 'cache
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
    ;; `find-files' (SPC f f) is replaced.
    dotspacemacs-use-ido nil
@@ -181,10 +186,42 @@ before layers configuration."
 (defun no-smartparens ()
   (smartparens-mode -1))
 
+(defun rebind-evil-keys ()
+  "Rebind and unbind some evil keys for better ergonomics."
+
+  ;; Rebind the macro key. Spacemacs and emacs like to use q for quit, and it'd
+  ;; be nicer if it were a nop in non-evilified modes.
+  (define-key evil-normal-state-map "q" nil)
+  (define-key evil-normal-state-map "Q" 'evil-record-macro)
+
+  ;; Don't use spacemacs's special "#" and "*" auto-highlight-symbol search
+  ;; bindings. Prefer the evil defaults.
+  (define-key evil-normal-state-map (kbd "*") 'evil-search-word-forward)
+  (define-key evil-normal-state-map (kbd "#") 'evil-search-word-backward)
+
+  ;; Don't use ex mode! Except for sub.
+  (define-key evil-motion-state-map ":" 'yell-save-pink)
+  (define-key evil-normal-state-map ":" 'yell-save-pinky)
+
+  ;; Use "SPC ;", not "M-;" for comments!
+  (global-set-key (kbd "M-;") nil))
+
+(defun magit-2-fixes ()
+  (use-package magit
+    :commands (magit-blame-mode)
+    :config
+    (progn
+      (evil-make-overriding-map magit-blame-mode-map 'normal)
+      (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps))))
+
 (defun dotspacemacs/config ()
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+
+  (rebind-evil-keys)
+
+  (magit-2-fixes)
 
   ;; Allow cursore beyond end of line. Necessary for clojure evaling sexps until
   ;; https://github.com/syl20bnr/spacemacs/issues/646 is fixed.
@@ -197,9 +234,6 @@ layers configuration."
   (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
   (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
 
-  ;; Tell magit that we know what we're doing (ish).
-  (setq magit-last-seen-setup-instructions "1.4.0")
-
   ;; Turn on line numbers for all programming modes.
   (add-hook 'prog-mode-hook 'linum-mode)
 
@@ -210,7 +244,7 @@ layers configuration."
   (global-evil-matchit-mode 1)
 
   ;; Start magit commit mode in insert mode.
-  (add-to-list 'evil-insert-state-modes 'git-commit-mode)
+  (add-hook 'git-commit-mode-hook 'evil-insert-state)
 
   ;; Two spaces for some langs.
   (dolist (hook '(enh-ruby-mode-hook
@@ -223,6 +257,7 @@ layers configuration."
   (setq-default web-mode-css-indent-offset 2)
   (setq-default web-mode-code-indent-offset 2)
   (setq-default js2-basic-offset 2)
+  (setq-default js2-strict-trailing-comma-warning nil)
 
   ;; Some modes are slow with smartparens.
   (dolist (hook '(enh-ruby-mode-hook
@@ -238,10 +273,6 @@ layers configuration."
   ;; Use marked as external markdown viewer.
   (setq markdown-open-command "marked")
 
-  ;; Tell js2-mode to shutup about trailing commas. They are fine when
-  ;; using js compilers.
-  (js2-strict-trailing-comma-warning nil)
-
   ;; Rebind the macro key. Spacemacs and emacs like to use q for quit, and it'd
   ;; be nicer if it were a nop in non-evilified modes.
   (define-key evil-normal-state-map "q" nil)
@@ -256,16 +287,9 @@ layers configuration."
   ;; we edit the spacemacs file Emacs will yell at us.
   (setq vc-follow-symlinks t)
 
-  ;; magit-blame-mode is read-only, so evilify it.
-  (evilify magit-blame-mode magit-blame-map)
-
   ;; Use helm follow mode when using helm-ag, rather than having to C-c C-f
   ;; every time.
   (add-hook 'helm-before-initialize-hook 'auto-follow-helm-ag)
-
-  ;; Don't use ex mode! Except for sub.
-  (define-key evil-motion-state-map ":" 'yell-save-pink)
-  (define-key evil-normal-state-map ":" 'yell-save-pinky)
 
   ;; Don't use Ctrl-W for window commands. Prefer SPC w.
   (dolist (map '(evil-motion-state-map
