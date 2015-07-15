@@ -24,4 +24,3 @@ logfile
 .tern-port
 .agignore
 .nvmrc
-.vim/spell
