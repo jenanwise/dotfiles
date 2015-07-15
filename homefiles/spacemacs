@@ -42,7 +42,7 @@
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(helm-ls-git)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(rainbow-delimiters)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -75,7 +75,8 @@ before layers configuration."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(zenburn)
+   dotspacemacs-themes '(zenburn
+                         spacemacs-dark)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -212,7 +213,22 @@ before layers configuration."
     :config
     (progn
       (evil-make-overriding-map magit-blame-mode-map 'normal)
-      (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps))))
+      (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
+      )))
+
+(defun golang-setup ()
+  (use-package go-mode
+    :init
+    (progn
+      ;; goimports > gofmt
+      (setq gofmt-command "goimports")
+
+      ;; Fix GOPATH until https://github.com/syl20bnr/spacemacs/pull/1878 is fixed.
+      (exec-path-from-shell-copy-env "GOPATH")
+
+      (evil-leader/set-key-for-mode 'go-mode
+        "ofp" 'fill-paragraph
+        "mgi" 'go-goto-imports))))
 
 (defun dotspacemacs/config ()
   "Configuration function.
@@ -220,8 +236,19 @@ before layers configuration."
 layers configuration."
 
   (rebind-evil-keys)
-
   (magit-2-fixes)
+  (golang-setup)
+
+  ;; Quickly delete the contents of the minibuffer. This is the same as C-a
+  ;; followed by M-k, but slightly more erognomic to type.
+  (define-key minibuffer-local-map (kbd "C-c C-c") 'delete-minibuffer-contents)
+
+  ;; Helm's builtin alternative to projectile's project switcher
+  (evil-leader/set-key "pF" 'helm-browse-project)
+
+  ;; This should probably be in spacmacs. Need a way to pass the negative
+  ;; argument for tools like helm-ag.
+  (evil-leader/set-key "-" 'negative-argument)
 
   ;; Allow cursore beyond end of line. Necessary for clojure evaling sexps until
   ;; https://github.com/syl20bnr/spacemacs/issues/646 is fixed.
@@ -289,7 +316,7 @@ layers configuration."
 
   ;; Use helm follow mode when using helm-ag, rather than having to C-c C-f
   ;; every time.
-  (add-hook 'helm-before-initialize-hook 'auto-follow-helm-ag)
+  ;; (add-hook 'helm-before-initialize-hook 'auto-follow-helm-ag)
 
   ;; Don't use Ctrl-W for window commands. Prefer SPC w.
   (dolist (map '(evil-motion-state-map
@@ -306,12 +333,7 @@ layers configuration."
   (evil-leader/set-key-for-mode 'cider-mode
     "msn" 'cider-repl-set-ns
     "ofb" 'cider-format-buffer)
-  (evil-leader/set-key-for-mode 'go-mode
-    "ofp" 'fill-paragraph
-    "mgi" 'go-goto-imports)
-
-  ;; Fix GOPATH until https://github.com/syl20bnr/spacemacs/pull/1878 is fixed.
-  (exec-path-from-shell-copy-env "GOPATH")
+  
 
   ;; Setup smartparens the way we like it.
   (require 'smartparens-config)
@@ -324,8 +346,27 @@ layers configuration."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ahs-case-fold-search nil)
+ '(ahs-default-range (quote ahs-range-whole-buffer))
+ '(ahs-idle-interval 0.25)
+ '(ahs-idle-timer 0 t)
+ '(ahs-inhibit-face-list nil)
+ '(ccm-ignored-commands
+   (quote
+    (mouse-drag-region mouse-set-point widget-button-click scroll-bar-toolkit-scroll evil-mouse-drag-region)))
+ '(ccm-recenter-at-end-of-file t)
+ '(max-lisp-eval-depth 10600)
  '(neo-theme (quote arrow))
+ '(paradox-github-token t)
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps")))
  '(ring-bell-function (quote ignore) t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:foreground "#DCDCCC" :background "#3F3F3F"))))
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))

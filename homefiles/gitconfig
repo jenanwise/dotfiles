@@ -22,6 +22,7 @@
     alog = log --abbrev-commit
     todo = grep --heading --line-number --break -e "FIXME" -e "TODO" -e "XXX"
     b = branch
+    rev = rev-parse --short
 [branch]
     autosetuprebase = always
 [push]

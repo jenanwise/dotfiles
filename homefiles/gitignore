@@ -22,3 +22,6 @@ logfile
 *-init.clj
 .projectile
 .tern-port
+.agignore
+.nvmrc
+.vim/spell

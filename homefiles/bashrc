@@ -51,6 +51,8 @@ export CLOJURE_USER_LIB="$HOME/.clj"
 export AWS_SECRET_ACCESS_KEY=
 export AWS_ACCESS_KEY_ID=
 
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
 
 ## Platform-specific setup
 
@@ -149,4 +151,5 @@ done
 
 ## Private env settings
 
+[[ -f ~/.bashrc_local ]] && source ~/.bashrc_local
 [[ -f ~/.keys_env ]] && source ~/.keys_env
