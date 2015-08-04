@@ -30,9 +30,8 @@
      osx
      python
      restclient
-     ruby
+     ;; ruby
      shell
-     shell-scripts
      syntax-checking
      version-control
      )
@@ -40,15 +39,7 @@
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages
-   '(;; helm-ls-git is a sometimes-useful alternative to helm-projectile. It's the
-     ;; officially-blessed helm project file finder.
-     helm-ls-git
-
-     ;; The `html` layer isn't configured to my liking, so we just explictly ask
-     ;; for web-mode.
-     web-mode)
-
+   dotspacemacs-additional-packages '(web-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(rainbow-delimiters)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -77,12 +68,17 @@ before layers configuration."
    dotspacemacs-startup-banner 'official
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'."
-   dotspacemacs-startup-lists '(recents bookmarks projects)
+   dotspacemacs-startup-lists '(recents projects)
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(zenburn
-                         spacemacs-dark)
+   dotspacemacs-themes '(spacemacs-dark
+                         spacemacs-light
+                         solarized-light
+                         solarized-dark
+                         leuven
+                         monokai
+                         zenburn)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -164,31 +160,39 @@ before layers configuration."
    ;; Not used for now.
    dotspacemacs-default-package-repository nil
    )
-
+  ;; User initialization goes here
   (setq-default git-magit-status-fullscreen t)
   (setq-default ruby-version-manager 'rbenv)
 
   ;; Default to using full symbols for "*" and "#".
   (setq-default evil-symbol-word-search t)
+
+  ;; Better margins
+  (setq-default left-margin-width 1 right-margin-width 1)
+  (set-window-buffer nil (current-buffer))
+
+  (setq-default ace-jump-mode-gray-background nil)
+  (setq-default ace-jump-mode-scope 'window)
   )
+
+(defun set-margins (cols)
+  (interactive "nNumber of cols: ")
+  (setq left-margin-width cols right-margin-width cols)
+  (set-window-buffer nil (current-buffer)))
+
+(defun toggle-margins ()
+  (interactive)
+  (if (> left-margin-width 1)
+      (set-margins 1)
+    (set-margins 120)))
 
 (defun set-two-space-mode ()
   (setq-local evil-shift-width 2))
-
-(defun start-evil-ex-subs ()
-  "Start an evil-ex-mode substition."
-  (interactive)
-  (if (evil-visual-state-p)
-      (evil-ex "'<,'>s/")
-    (evil-ex "%s/")))
 
 (defun yell-save-pinky ()
   "Yell at me about using vimmer crutches. Save the pinky!"
   (interactive)
   (message (propertize "Save your pinky! Use your SPC powers!" 'face '(:background "red"))))
-
-(defun no-smartparens ()
-  (smartparens-mode -1))
 
 (defun rebind-evil-keys ()
   "Rebind and unbind some evil keys for better ergonomics."
@@ -203,10 +207,6 @@ before layers configuration."
   (define-key evil-normal-state-map (kbd "*") 'evil-search-word-forward)
   (define-key evil-normal-state-map (kbd "#") 'evil-search-word-backward)
 
-  ;; Don't use ex mode! Except for sub.
-  (define-key evil-motion-state-map ":" 'yell-save-pink)
-  (define-key evil-normal-state-map ":" 'yell-save-pinky)
-
   ;; Use "SPC ;", not "M-;" for comments!
   (global-set-key (kbd "M-;") nil))
 
@@ -219,39 +219,110 @@ before layers configuration."
       (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
       )))
 
+(defun set-ret-js2 ()
+  (local-set-key (kbd "RET") 'js2-line-break))
+
+(defun set-ret-general ()
+  (local-set-key (kbd "RET") 'indent-new-comment-line))
+
 (defun golang-setup ()
   (use-package go-mode
     :init
     (progn
       ;; goimports is a better gofmt
-      (setq gofmt-command "goimports")
+      (setq-default gofmt-command "goimports")
 
       (evil-leader/set-key-for-mode 'go-mode
         "ofp" 'fill-paragraph
-        "mgi" 'go-goto-imports))))
+        "mgi" 'go-goto-imports)))
+  (add-hook 'go-mode-hook 'set-ret-general))
+
+(defun find-local-file (name)
+  (let ((base (locate-dominating-file
+               (buffer-file-name)
+               name)))
+    (when base
+      (let ((path (expand-file-name (concat base name))))
+        path))))
+
+(defun set-checker-status (enable checker)
+  (if enable
+      (progn
+        (message "%s dissabled" checker)
+        (setq flycheck-disabled-checkers (remove checker flycheck-disabled-checkers)))
+    (progn
+      (message "%s enabled" checker)
+      (add-to-list 'flycheck-disabled-checkers checker))))
+
+(defun toggle-checker (checker)
+  (interactive
+   (let ((default (flycheck-get-checker-for-buffer)))
+     (list (read-flycheck-checker "Toggle checker: "
+                                  (when (flycheck-checker-get default 'command)
+                                    default)
+                                  'command))))
+  (set-checker-status (memq checker flycheck-disabled-checkers) checker))
+
+;; web-mode doesn't give us minor mode hooks for the various sub modes
+;; (html, js, css) that it works with. This is fine for mixed mode files,
+;; but most of the time we aren't operating on mixed mode files. So,
+;; we create our own minor modes and hook them in when we know we're
+;; in single-mode web-mode files.
+(define-minor-mode web-minor-javascript nil)
+(define-minor-mode web-minor-css nil)
+(define-minor-mode web-minor-html nil)
+(defun set-web-minor-modes ()
+  (cond ((string-match "\\.jsx?\\'" buffer-file-name) (web-minor-javascript))
+        ((string-match "\\.html\\'" buffer-file-name) (web-minor-html))
+        ((string-match "\\.css\\'" buffer-file-name) (web-minor-css))))
+
+(defun find-node-executable (name)
+  (let ((path (find-local-file (concat "node_modules/.bin/" name))))
+    (if path path name)))
+
+(defun setup-javascript-checkers ()
+  (setq-local flycheck-javascript-jscs-executable (find-node-executable "jscs"))
+  (set-checker-status t 'javascript-jscs))
+
+(defun web-setup ()
+  ;; The html layer's web-mode layer is poo. Use our own configuration.
+  (require 'web-mode)
+  (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (setq-default web-mode-enable-auto-quoting nil)
+  (add-hook 'web-mode-hook 'set-web-minor-modes)
+  (add-hook 'web-minor-javascript-hook 'setup-javascript-checkers)
+  (flycheck-add-mode 'javascript-jscs 'web-mode)
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jscs)))
+  (defadvice web-mode-highlight-part (around tweak-jsx activate)
+    (if (equal web-mode-content-type "jsx")
+        (let ((web-mode-enable-part-face nil))
+          ad-do-it)
+      ad-do-it))
+  (add-hook 'json-mode-hook
+            (lambda ()
+              (make-local-variable 'js-indent-level)
+              (setq js-indent-level 2))))
 
 (defun dotspacemacs/config ()
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
 
+  (require 'flycheck)
+
   (rebind-evil-keys)
   (magit-2-fixes)
   (golang-setup)
 
-  ;; The html layer's web-mode layer is poo. Use our own configuration.
-  (require 'web-mode)
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(emacs-lisp-checkdoc)))
 
-  ;; JSX
-  (setq-default web-mode-enable-auto-quoting nil)
-  (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-  (setq jsx-indent-level 2)
-  (defadvice web-mode-highlight-part (around tweak-jsx activate)
-    (if (equal web-mode-content-type "jsx")
-        (let ((web-mode-enable-part-face nil))
-          ad-do-it)
-      ad-do-it))
+  (web-setup)
 
   ;; Quickly delete the contents of the minibuffer. This is the same as C-a
   ;; followed by M-k, but slightly more erognomic to type.
@@ -280,7 +351,7 @@ layers configuration."
   (add-to-list 'auto-mode-alist '("rest\\'" . restclient-mode))
 
   ;; Turn on line numbers for all programming modes.
-  (add-hook 'prog-mode-hook 'linum-mode)
+  ;; (add-hook 'prog-mode-hook 'linum-mode)
 
   ;; Shift + return to open a URL.
   (global-set-key (kbd "<S-return>") 'browse-url-at-point)
@@ -296,21 +367,19 @@ layers configuration."
                   ruby-mode-hook
                   coffee-mode-hook
                   yaml-mode-hook
+                  json-mode
+                  css-mode
+                  html-mode
                   web-mode))
     (add-hook hook 'set-two-space-mode))
   (setq-default web-mode-markup-indent-offset 2)
   (setq-default web-mode-css-indent-offset 2)
   (setq-default web-mode-code-indent-offset 2)
 
-  ;; Some modes are slow with smartparens.
-  (dolist (hook '(enh-ruby-mode-hook
-                  ruby-mode-hook))
-    (add-hook hook 'no-smartparens))
-
   ;; Turn on aggressive-indent for some modes by default
   (dolist (hook '(emacs-lisp-mode-hook
                   clojure-mode-hook
-                  yaml-mode-hook))
+                  ))
     (add-hook hook #'aggressive-indent-mode))
 
   ;; Use marked as external markdown viewer.
@@ -340,12 +409,12 @@ layers configuration."
             (lambda ()
               (font-lock-add-keywords
                nil
-               '(("\\<\\(FIXME\\|TODO\\|XXX\\):" 1 font-lock-warning-face t)))))
+               '(("\\<\\(FIXME\\|TODO\\|XXX\\)" 1 font-lock-warning-face t)))))
 
   ;; Custom SPC powers.
   (evil-leader/set-key
-    "ofp" 'sp-indent-defun
-    "os" 'start-evil-ex-subs)
+    "otm" 'toggle-margins
+    "ofp" 'sp-indent-defun)
 
   ;; Override some keybindings.
   (evil-leader/set-key-for-mode 'cider-mode
@@ -355,7 +424,9 @@ layers configuration."
   ;; Setup smartparens the way we like it.
   (require 'smartparens-config)
   (sp-use-paredit-bindings)
-  (define-key smartparens-mode-map (kbd "C-)") 'sp-slurp-hybrid-sexp))
+  (define-key smartparens-mode-map (kbd "C-)") 'sp-slurp-hybrid-sexp)
+  (sp-pair "`" "`" :actions '(insert wrap autoskip))
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -369,25 +440,85 @@ layers configuration."
  '(ahs-idle-interval 0.25)
  '(ahs-idle-timer 0 t)
  '(ahs-inhibit-face-list nil)
- '(ccm-ignored-commands
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+ '(compilation-message-face (quote default))
+ '(cua-global-mark-cursor-color "#2aa198")
+ '(cua-normal-cursor-color "#839496")
+ '(cua-overwrite-cursor-color "#b58900")
+ '(cua-read-only-cursor-color "#859900")
+ '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
+ '(highlight-symbol-colors
+   (--map
+    (solarized-color-blend it "#002b36" 0.25)
+    (quote
+     ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
+ '(highlight-symbol-foreground-color "#93a1a1")
+ '(highlight-tail-colors
    (quote
-    (mouse-drag-region mouse-set-point widget-button-click scroll-bar-toolkit-scroll evil-mouse-drag-region)))
- '(ccm-recenter-at-end-of-file t)
+    (("#49483E" . 0)
+     ("#67930F" . 20)
+     ("#349B8D" . 30)
+     ("#21889B" . 50)
+     ("#968B26" . 60)
+     ("#A45E0A" . 70)
+     ("#A41F99" . 85)
+     ("#49483E" . 100))))
+ '(hl-bg-colors
+   (quote
+    ("#7B6000" "#8B2C02" "#990A1B" "#93115C" "#3F4D91" "#00629D" "#00736F" "#546E00")))
+ '(hl-fg-colors
+   (quote
+    ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
+ '(js2-strict-trailing-comma-warning nil)
+ '(json-reformat:indent-width 2)
+ '(magit-diff-use-overlays nil)
  '(max-lisp-eval-depth 10600)
  '(neo-theme (quote arrow))
  '(paradox-github-token t)
+ '(pos-tip-background-color "#073642")
+ '(pos-tip-foreground-color "#93a1a1")
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps")))
  '(ring-bell-function (quote ignore) t)
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(sp-autoskip-closing-pair (quote always))
- '(sp-autoskip-opening-pair nil)
- '(sp-cancel-autoskip-on-backward-movement t))
+ '(sp-cancel-autoskip-on-backward-movement t)
+ '(sp-ignore-modes-list (quote (enh-ruby-mode ruby-mode minibuffer-inactive-mode)))
+ '(term-default-bg-color "#002b36")
+ '(term-default-fg-color "#839496")
+ '(vc-annotate-background "#2B2B2B")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#BC8383")
+     (40 . "#CC9393")
+     (60 . "#DFAF8F")
+     (80 . "#D0BF8F")
+     (100 . "#E0CF9F")
+     (120 . "#F0DFAF")
+     (140 . "#5F7F5F")
+     (160 . "#7F9F7F")
+     (180 . "#8FB28F")
+     (200 . "#9FC59F")
+     (220 . "#AFD8AF")
+     (240 . "#BFEBBF")
+     (260 . "#93E0E3")
+     (280 . "#6CA0A3")
+     (300 . "#7CB8BB")
+     (320 . "#8CD0D3")
+     (340 . "#94BFF3")
+     (360 . "#DC8CC3"))))
+ '(vc-annotate-very-old-color "#DC8CC3")
+ '(weechat-color-list
+   (unspecified "#272822" "#49483E" "#A20C41" "#F92672" "#67930F" "#A6E22E" "#968B26" "#E6DB74" "#21889B" "#66D9EF" "#A41F99" "#FD5FF0" "#349B8D" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:foreground "#DCDCCC" :background "#3F3F3F"))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(web-mode-css-property-name-face ((t (:inherit font-lock-type-face)))))
