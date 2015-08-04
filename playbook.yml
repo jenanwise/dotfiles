@@ -8,7 +8,6 @@
     applications:
       - 1password
       - alfred
-      - amazon-music
       - chromecast
       - colloquy
       - dropbox
@@ -67,6 +66,7 @@
       automake: 
       bash-completion: 
       boot2docker: 
+      cairo:
       colordiff: 
       coreutils: 
       curl: 
