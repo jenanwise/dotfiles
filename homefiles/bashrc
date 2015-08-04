@@ -17,6 +17,7 @@ set -o vi
 export GOPATH="$HOME/src/go"
 
 USERPATH=\
+"./node_modules/.bin/":\
 "$HOME/bin":\
 "$HOME/.local/bin":\
 "$HOME/node_modules/.bin":\
