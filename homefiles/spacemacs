@@ -73,11 +73,6 @@ before layers configuration."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light
-                         solarized-light
-                         solarized-dark
-                         leuven
-                         monokai
                          zenburn)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -307,16 +302,45 @@ before layers configuration."
               (make-local-variable 'js-indent-level)
               (setq js-indent-level 2))))
 
+(defun true-evil-org-eol-call (fun)
+  (org-end-of-line)
+  (funcall fun)
+  (evil-append nil))
+
+(defun setup-org-mode()
+  (require 'org)
+  (evil-leader/set-key
+    "oA" 'org-agenda
+    ;; SPC-C-c?
+    "oc" 'org-capture)
+  (evil-define-key 'normal evil-org-mode-map "T"
+    '(lambda ()
+       (interactive)
+       (true-evil-org-eol-call
+        (lambda () (org-insert-todo-heading nil)))
+       ))
+  (evil-define-key 'normal evil-org-mode-map "o"
+    (lambda ()
+      (interactive)
+      (true-evil-org-eol-call 'clever-insert-item))))
+
 (defun dotspacemacs/config ()
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+
+  ;; spacemacs-dark has vars the same as normal text -- boo
+  (custom-theme-set-faces
+   'spacemacs-dark
+   '(font-lock-variable-name-face
+     ((((class color) (min-colors 89)) (:foreground "#859900")))))
 
   (require 'flycheck)
 
   (rebind-evil-keys)
   (magit-2-fixes)
   (golang-setup)
+  (setup-org-mode)
 
   (setq-default flycheck-disabled-checkers
                 (append flycheck-disabled-checkers
@@ -449,6 +473,7 @@ layers configuration."
  '(cua-normal-cursor-color "#839496")
  '(cua-overwrite-cursor-color "#b58900")
  '(cua-read-only-cursor-color "#859900")
+ '(fci-rule-color "#383838")
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
  '(highlight-symbol-colors
    (--map
@@ -487,38 +512,4 @@ layers configuration."
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(sp-autoskip-closing-pair (quote always))
  '(sp-cancel-autoskip-on-backward-movement t)
- '(sp-ignore-modes-list (quote (enh-ruby-mode ruby-mode minibuffer-inactive-mode)))
- '(term-default-bg-color "#002b36")
- '(term-default-fg-color "#839496")
- '(vc-annotate-background "#2B2B2B")
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#BC8383")
-     (40 . "#CC9393")
-     (60 . "#DFAF8F")
-     (80 . "#D0BF8F")
-     (100 . "#E0CF9F")
-     (120 . "#F0DFAF")
-     (140 . "#5F7F5F")
-     (160 . "#7F9F7F")
-     (180 . "#8FB28F")
-     (200 . "#9FC59F")
-     (220 . "#AFD8AF")
-     (240 . "#BFEBBF")
-     (260 . "#93E0E3")
-     (280 . "#6CA0A3")
-     (300 . "#7CB8BB")
-     (320 . "#8CD0D3")
-     (340 . "#94BFF3")
-     (360 . "#DC8CC3"))))
- '(vc-annotate-very-old-color "#DC8CC3")
- '(weechat-color-list
-   (unspecified "#272822" "#49483E" "#A20C41" "#F92672" "#67930F" "#A6E22E" "#968B26" "#E6DB74" "#21889B" "#66D9EF" "#A41F99" "#FD5FF0" "#349B8D" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
- '(web-mode-css-property-name-face ((t (:inherit font-lock-type-face)))))
+ '(sp-ignore-modes-list (quote (enh-ruby-mode ruby-mode minibuffer-inactive-mode))))
