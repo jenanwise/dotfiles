@@ -5,6 +5,8 @@
     - chflags nohidden {{ home_dir }}/Library
     - defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false # Key repeat
     - defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+    - defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+    - defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
     - defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
     - defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
     - defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
