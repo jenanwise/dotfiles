@@ -68,7 +68,7 @@ before layers configuration."
    dotspacemacs-startup-banner 'official
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'."
-   dotspacemacs-startup-lists '(recents projects)
+   dotspacemacs-startup-lists '(bookmarks projects)
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
@@ -212,6 +212,7 @@ before layers configuration."
     (progn
       (evil-make-overriding-map magit-blame-mode-map 'normal)
       (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
+      (setq magit-branch-arguments (remove "--track" magit-branch-arguments))
       )))
 
 (defun set-ret-js2 ()
@@ -285,6 +286,7 @@ before layers configuration."
   (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.styl\\'" . css-mode))
   (setq-default web-mode-enable-auto-quoting nil)
   (add-hook 'web-mode-hook 'set-web-minor-modes)
   (add-hook 'web-minor-javascript-hook 'setup-javascript-checkers)
@@ -308,7 +310,8 @@ before layers configuration."
   (evil-append nil))
 
 (defun setup-org-mode()
-  (require 'org)
+  (require 'org-install)
+  (setq org-agenda-files (list "~/org/"))
   (evil-leader/set-key
     "oA" 'org-agenda
     ;; SPC-C-c?
@@ -332,8 +335,8 @@ layers configuration."
   ;; spacemacs-dark has vars the same as normal text -- boo
   (custom-theme-set-faces
    'spacemacs-dark
-   '(font-lock-variable-name-face
-     ((((class color) (min-colors 89)) (:foreground "#859900")))))
+   '(font-lock-constant-face ((((class color) (min-colors 89)) (:foreground "#BFDEA9"))))
+   '(font-lock-variable-name-face ((((class color) (min-colors 89)) (:foreground "#859900")))))
 
   (require 'flycheck)
 
@@ -499,6 +502,7 @@ layers configuration."
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(js2-strict-trailing-comma-warning nil)
  '(json-reformat:indent-width 2)
+ '(magit-diff-arguments (quote ("--ignore-all-space" "--no-ext-diff")))
  '(magit-diff-use-overlays nil)
  '(max-lisp-eval-depth 10600)
  '(neo-theme (quote arrow))
