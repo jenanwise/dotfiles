@@ -94,6 +94,12 @@ else
     fi
 fi
 
+## fasd/autojump
+eval "$(fasd --init auto)"
+alias j="fasd_cd -d"
+alias jj="fasd_cd -d -i"
+
+
 
 ## Aliasses
 
@@ -111,11 +117,21 @@ alias ll='ls -l'
 alias lx="awk '{ print NR \"\\t\" \$0 }'"  # print 1-based line numbers
 alias path='echo $PATH | tr : "\n"'
 alias subup='(cd `git rev-parse --show-toplevel` && git submodule update)'
+alias pgctl='pg_ctl -D /usr/local/var/postgres'
+alias boot2='eval $(boot2docker shellinit)'
+alias d='docker'
+
+alias l2up='sudo ifconfig lo0 alias 127.0.0.2'
+alias l2down='sudo ifconfig lo0 -alias 127.0.0.2'
+alias db1='sudo sed -i -e "s/127\.0\.0\.2 db/127.0.0.1 db/" /etc/hosts'
+alias db2='sudo sed -i -e "s/127\.0\.0\.1 db/127.0.0.2 db/" /etc/hosts'
 
 
 ## Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
+## Golang
+[[ -s "/Users/jenan/.gvm/scripts/gvm" ]] && source "/Users/jenan/.gvm/scripts/gvm"
 
 ## Color support for `ls`
 #
@@ -133,12 +149,6 @@ if [ "$TERM" != "dumb" ]; then
         alias ls='ls -G'
     fi
 fi
-
-## fasd/autojump
-eval "$(fasd --init auto)"
-alias j="fasd_cd -d"
-alias jj="fasd_cd -d -i"
-
 
 ## SSH
 
