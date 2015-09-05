@@ -21,6 +21,7 @@
      auto-completion
      clojure
      dash
+     dockerfile
      emacs-lisp
      git
      go
