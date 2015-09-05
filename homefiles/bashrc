@@ -14,14 +14,11 @@ set -o vi
 
 ## Environment Vars
 
-export GOPATH="$HOME/src/go"
-
 USERPATH=\
 "./node_modules/.bin/":\
 "$HOME/bin":\
 "$HOME/.local/bin":\
-"$HOME/node_modules/.bin":\
-"$GOPATH/bin"
+"$HOME/node_modules/.bin"
 
 if which /usr/local/bin/brew >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
@@ -43,7 +40,7 @@ export REALHOST=${HOSTNAME%%.*} # Strip off ".local", ".lan", etc. that OSX puts
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 export EDITOR="emacsclient -n"
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
-export HISTCONTROL=ignoredups
+export HISTCONTROL=ignoreboth
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
 export VIRTUALENV_USE_DISTRIBUTE=1
