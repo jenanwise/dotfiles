@@ -367,9 +367,6 @@ layers configuration."
   ;; argument for tools like helm-ag.
   (evil-leader/set-key "-" 'negative-argument)
 
-  ;; Spacemacs current is broken for bookmarks. Manually bind to the current func.
-  (evil-leader/set-key "hb" 'helm-bookmarks)
-
   ;; Allow cursor beyond end of line. Necessary for clojure evaling sexps until
   ;; https://github.com/syl20bnr/spacemacs/issues/646 is fixed.
   (setq evil-move-cursor-back nil)
