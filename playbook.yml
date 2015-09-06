@@ -12,6 +12,7 @@
       - colloquy
       - dockertoolbox
       - dropbox
+      - emacs
       - firefox
       - flux
       - font-inconsolata
@@ -26,13 +27,14 @@
       - vagrant
       - virtualbox
       - vlc
+      - xquartz
+      - wireshark
     home: "/Users/{{ whoami.stdout }}"
     src_home: "/Users/{{ whoami.stdout }}/src"
     taps:
       - caskroom/fonts
       - homebrew/dupes
       - homebrew/science
-      - railwaycat/emacsmacport
     python_packages:
       - ipython
       - autopep8
