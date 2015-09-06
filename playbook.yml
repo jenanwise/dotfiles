@@ -10,6 +10,7 @@
       - alfred
       - chromecast
       - colloquy
+      - dockertoolbox
       - dropbox
       - firefox
       - flux
@@ -19,7 +20,6 @@
       - google-drive
       - iterm2
       - keepingyouawake
-      - marked
       - paw
       - skype
       - slack
@@ -39,11 +39,6 @@
       - flake8
       - pep8
       - pyflakes
-    go_packages:
-      - github.com/golang/lint/golint
-      - github.com/k0kubun/pp
-      - github.com/motemen/gore
-      - github.com/nsf/gocode
     homefiles:
       agignore: .agignore
       bashrc: .bashrc
@@ -64,13 +59,12 @@
       aspell:
       autoconf: 
       automake: 
+      awscli:
       bash-completion: 
-      boot2docker: 
       cairo:
       colordiff: 
       coreutils: 
       curl: 
-      docker: 
       dtrx:
       dynamodb-local:
       emacs-mac: with-spacemacs-icon
@@ -84,8 +78,8 @@
       gdb: with-homebrewed-python,with-all-targets
       git: 
       gnu-sed: 
+      gnu-tar:
       gnupg: with-default-names
-      go: 
       graphicsmagick: 
       httpie:
       ispell: 
@@ -98,9 +92,11 @@
       mercurial: 
       nmap: 
       node: 
+      nvm:
       phantomjs: 
       postgresql: 
       python: 
+      python3:
       rbenv: 
       reattach-to-user-namespace: wrap-pbcopy-and-pbpaste
       redis: 

@@ -1,7 +1,8 @@
 ---
-- name: Install Homebrew Go
-  homebrew: name=go state=present
+- name: Check if GVM is installed
+  stat: path=~/.gvm/bin/gvm
+  register: gvm_installed
 
-- name: Install packages
-  shell: GOPATH={{ gopath }} go get -u {{ item }}
-  with_items: go_packages
+- name: Install GVM
+  shell: (curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/e5a06b52c76da676e5b42d1f0597e2ba1ee74790/binscripts/gvm-installer) | sh
+  when: gvm_installed.stat.exists == false
