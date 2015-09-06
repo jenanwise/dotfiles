@@ -1,0 +1,12 @@
+#!/bin/bash
+# Hit a url, reporting HTTP status.
+set -u
+URL=$1
+timestamp=$(date +"[%s]")
+result=$(curl -w "HTTP %{http_code} (%{time_total}s)" -sS "$URL" -o /dev/null)
+if [ $? -eq 0 ]; then
+    echo "$timestamp $result"
+    exit 0
+else
+    exit 1
+fi

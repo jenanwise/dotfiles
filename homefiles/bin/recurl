@@ -2,12 +2,9 @@
 # Repeatedly `curl` a url and report timestamp and status.
 set -u
 URL=$1
-echo "Recurling \"$URL\""
+START="$(date +%s)"
+echo "[$START] Recurling \"$URL\""
 while true; do
-    timestamp=$(date +"[%s]")
-    result=$(curl -w "HTTP %{http_code} (%{time_total}s)" --max-time 1 -sS "$URL" -o /dev/null)
-    if [ $? -eq 0 ]; then
-        echo "$timestamp $result"
-    fi
-    sleep 0.3s
+    hit $URL
+    sleep 0.5s
 done
