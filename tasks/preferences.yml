@@ -22,5 +22,6 @@
     - defaults write com.apple.finder ShowRecentTags -bool false
     - defaults write com.apple.finder ShowSidebar -bool true
     - defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+    - defaults write com.apple.terminal "Default Window Settings" -string Homebrew
     - defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -int 1
     - defaults write com.googlecode.iterm2 PrefsCustomFolder "{{ home_dir }}/.iterm2"
