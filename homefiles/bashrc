@@ -43,7 +43,6 @@ export LESS="-i -g -M -R -x4 -X -f -F -z-1"
 export HISTCONTROL=ignoreboth
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
-export VIRTUALENV_USE_DISTRIBUTE=1
 export LEIN_FAST_TRAMPOLINE=y
 export CLOJURE_USER_LIB="$HOME/.clj"
 export AWS_SECRET_ACCESS_KEY=
@@ -118,12 +117,17 @@ alias pgctl='pg_ctl -D /usr/local/var/postgres'
 alias d='docker'
 alias dm='docker-machine'
 
-
 ## Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 ## Golang
 [[ -s "/Users/jenan/.gvm/scripts/gvm" ]] && source "/Users/jenan/.gvm/scripts/gvm"
+
+## Python
+export WORKON_HOME=~/.virtualenvs
+export VIRTUALENV_USE_DISTRIBUTE=1
+WRAPPERPATH=``
+if which virtualenvwrapper.sh > /dev/null; then source virtualenvwrapper.sh; fi
 
 ## Color support for `ls`
 #

@@ -24,11 +24,10 @@
       - paw
       - skype
       - slack
-      - vagrant
       - virtualbox
       - vlc
-      - xquartz
       - wireshark
+      - xquartz
     home: "/Users/{{ whoami.stdout }}"
     src_home: "/Users/{{ whoami.stdout }}/src"
     taps:
