@@ -9,7 +9,6 @@
 [core]
     excludesfile = ~/.gitignore
     editor = vim
-    pager = diff-highlight | less -r
 
 [alias]
     st = status -s
