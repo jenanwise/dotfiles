@@ -23,6 +23,7 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     ;; ruby
      ansible
      auto-completion
      clojure
@@ -35,9 +36,9 @@ values."
      markdown
      org
      osx
+     puppet
      python
      restclient
-     ;; ruby
      shell
      syntax-checking
      version-control
@@ -81,7 +82,7 @@ values."
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'.
    ;; (default '(recents projects))
-   dotspacemacs-startup-lists '(recents projects)
+   dotspacemacs-startup-lists nil
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
@@ -341,6 +342,15 @@ user code."
               (make-local-variable 'js-indent-level)
               (setq js-indent-level 2))))
 
+(defun set-projectile-mode-line-local ()
+  (lambda ()
+    (when (file-remote-p default-directory)
+      (setq-local projectile-mode-line "Projectile"))))
+
+(defun fix-tramp-slow-projectile ()
+  "Tramp (remote files) causes a lot of things to be slow. Fix that."
+  (add-hook 'find-file-hook 'set-projectile-mode-line-local))
+
 (defun true-evil-org-eol-call (fun)
   (org-end-of-line)
   (funcall fun)
@@ -369,11 +379,7 @@ user code."
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
 
-  ;; spacemacs-dark has vars the same as normal text -- boo
-  (custom-theme-set-faces
-   'spacemacs-dark
-   '(font-lock-constant-face ((((class color) (min-colors 89)) (:foreground "#BFDEA9"))))
-   '(font-lock-variable-name-face ((((class color) (min-colors 89)) (:foreground "#859900")))))
+  (fix-tramp-slow-projectile)
 
   (require 'flycheck)
 
