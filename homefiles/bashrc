@@ -116,6 +116,8 @@ alias subup='(cd `git rev-parse --show-toplevel` && git submodule update)'
 alias pgctl='pg_ctl -D /usr/local/var/postgres'
 alias d='docker'
 alias dm='docker-machine'
+alias dm-start='docker-machine start default'
+alias dm-env='eval $(docker-machine env default)'
 
 ## Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
