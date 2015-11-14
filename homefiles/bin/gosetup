@@ -1,8 +1,10 @@
 #!/bin/bash
 # Install/upgrade basic golang tools
 set -x
-go get -u -f github.com/tools/godep
-go get -u -f golang.org/x/tools/cmd/oracle
 go get -u -f github.com/nsf/gocode
-go get -u -f golang.org/x/tools/cmd/goimports
 go get -u -f github.com/rogpeppe/godef
+go get -u -f github.com/tools/godep
+go get -u -f golang.org/x/tools/cmd/godoc
+go get -u -f golang.org/x/tools/cmd/goimports
+go get -u -f golang.org/x/tools/cmd/gorename
+go get -u -f golang.org/x/tools/cmd/oracle
