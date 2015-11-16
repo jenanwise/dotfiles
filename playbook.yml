@@ -92,21 +92,19 @@
       llvm: with-lld,with-clang,with-rtti
       mercurial: 
       nmap: 
-      node: 
       nvm:
       phantomjs: 
       postgresql: 
       python: 
       python3:
-      rbenv: 
+      rbenv:
       reattach-to-user-namespace: wrap-pbcopy-and-pbpaste
       redis: 
       rlwrap: 
-      ruby: 
       ruby-build:
       sqlite: 
       the_silver_searcher: 
-      tmux: 
+      tmux:
       tree: 
       unrar: 
       vim: without-ruby,with-python3

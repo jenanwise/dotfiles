@@ -15,7 +15,7 @@ set -o vi
 ## Environment Vars
 
 USERPATH=\
-"./node_modules/.bin/":\
+"./node_modules/.bin":\
 "$HOME/bin":\
 "$HOME/.local/bin":\
 "$HOME/node_modules/.bin"
