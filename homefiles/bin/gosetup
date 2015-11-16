@@ -1,5 +1,10 @@
 #!/bin/bash
 # Install/upgrade basic golang tools
+if [ ! $(which go) ]; then
+    echo "go not installed" >&2
+    exit 1
+fi
+echo "Installing tooling for $(go version)"
 set -x
 go get -u -f github.com/nsf/gocode
 go get -u -f github.com/rogpeppe/godef
