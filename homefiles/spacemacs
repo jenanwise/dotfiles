@@ -23,7 +23,6 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;; ruby
      ansible
      auto-completion
      clojure
@@ -38,7 +37,9 @@ values."
      osx
      puppet
      python
+     react
      restclient
+     ruby
      shell
      syntax-checking
      version-control
@@ -47,8 +48,8 @@ values."
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
-   ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(web-mode)
+   ;; configuration in `dotspacemacs/user-config'.
+   dotspacemacs-additional-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(rainbow-delimiters)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -88,7 +89,7 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
                          zenburn)
-   ;; If non nil the cursor color matches the state color.
+   ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
@@ -115,16 +116,26 @@ values."
    dotspacemacs-command-key ":"
    ;; If non nil `Y' is remapped to `y$'. (default t)
    dotspacemacs-remap-Y-to-y$ t
+   ;; Name of the default layout (default "Default")
+   dotspacemacs-default-layout-name "Default"
+   ;; If non nil the default layout name is displayed in the mode-line.
+   ;; (default nil)
+   dotspacemacs-display-default-layout nil
+   ;; If non nil then the last auto saved layouts are resume automatically upon
+   ;; start. (default nil)
+   dotspacemacs-auto-resume-layouts nil
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
    dotspacemacs-auto-save-file-location 'cache
+   ;; Maximum number of rollback slots to keep in the cache. (default 5)
+   dotspacemacs-max-rollback-slots 5
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
    ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
    ;; `find-contrib-file' (SPC f e c) are replaced. (default nil)
    dotspacemacs-use-ido nil
-   ;; If non nil, `helm' will try to miminimize the space it uses. (default nil)
+   ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
    ;; if non nil, the helm header is hidden when there is only one source.
    ;; (default nil)
@@ -171,6 +182,10 @@ values."
    ;; scrolling overrides the default behavior of Emacs which recenters the
    ;; point when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
+   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
+   ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; (default nil)
+   dotspacemacs-line-numbers nil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode t
@@ -189,6 +204,10 @@ values."
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
+   ;; Delete whitespace while saving buffer. Possible values are `all',
+   ;; `trailing', `changed' or `nil'. Default is `changed' (cleanup whitespace
+   ;; on changed lines) (default 'changed)
+   dotspacemacs-whitespace-cleanup 'changed
    ))
 
 (defun dotspacemacs/user-init ()
@@ -297,50 +316,18 @@ user code."
                                   'command))))
   (set-checker-status (memq checker flycheck-disabled-checkers) checker))
 
-;; web-mode doesn't give us minor mode hooks for the various sub modes
-;; (html, js, css) that it works with. This is fine for mixed mode files,
-;; but most of the time we aren't operating on mixed mode files. So,
-;; we create our own minor modes and hook them in when we know we're
-;; in single-mode web-mode files.
-(define-minor-mode web-minor-javascript nil)
-(define-minor-mode web-minor-css nil)
-(define-minor-mode web-minor-html nil)
-(defun set-web-minor-modes ()
-  (cond ((string-match "\\.jsx?\\'" buffer-file-name) (web-minor-javascript))
-        ((string-match "\\.html\\'" buffer-file-name) (web-minor-html))
-        ((string-match "\\.css\\'" buffer-file-name) (web-minor-css))))
-
-(defun find-node-executable (name)
-  (let ((path (find-local-file (concat "node_modules/.bin/" name))))
-    (if path path name)))
-
-(defun setup-javascript-checkers ()
-  (setq-local flycheck-javascript-jscs-executable (find-node-executable "jscs"))
-  (set-checker-status t 'javascript-jscs))
-
 (defun web-setup ()
-  ;; The html layer's web-mode layer is poo. Use our own configuration.
-  (require 'web-mode)
-  (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.styl\\'" . css-mode))
-  (setq-default web-mode-enable-auto-quoting nil)
-  (add-hook 'web-mode-hook 'set-web-minor-modes)
-  (add-hook 'web-minor-javascript-hook 'setup-javascript-checkers)
-  (flycheck-add-mode 'javascript-jscs 'web-mode)
-  (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(javascript-jscs)))
-  (defadvice web-mode-highlight-part (around tweak-jsx activate)
-    (if (equal web-mode-content-type "jsx")
-        (let ((web-mode-enable-part-face nil))
-          ad-do-it)
-      ad-do-it))
-  (add-hook 'json-mode-hook
-            (lambda ()
-              (make-local-variable 'js-indent-level)
-              (setq js-indent-level 2))))
+  (setq-default
+   js2-basic-offset 2
+   css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-attr-indent-offset 2)
+  (with-eval-after-load 'web-mode
+    (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))))
 
 (defun set-projectile-mode-line-local ()
   (lambda ()
@@ -376,7 +363,7 @@ user code."
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
- This function is called at the very end of Spacemacs initialization after
+This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
 
   (fix-tramp-slow-projectile)
@@ -384,7 +371,7 @@ layers configuration. You are free to put any user code."
   (require 'flycheck)
 
   (rebind-evil-keys)
-  (magit-2-fixes)
+  ;; (magit-2-fixes)
   (golang-setup)
   (setup-org-mode)
 
@@ -430,23 +417,17 @@ layers configuration. You are free to put any user code."
   (add-hook 'git-commit-mode-hook 'evil-insert-state)
 
   ;; Two spaces for some langs.
-  (dolist (hook '(enh-ruby-mode-hook
-                  ruby-mode-hook
+  (dolist (hook '(ruby-mode-hook
                   coffee-mode-hook
                   yaml-mode-hook
                   json-mode
                   css-mode
-                  html-mode
-                  web-mode))
+                  html-mode))
     (add-hook hook 'set-two-space-mode))
-  (setq-default web-mode-markup-indent-offset 2)
-  (setq-default web-mode-css-indent-offset 2)
-  (setq-default web-mode-code-indent-offset 2)
 
   ;; Turn on aggressive-indent for some modes by default
   (dolist (hook '(emacs-lisp-mode-hook
-                  clojure-mode-hook
-                  ))
+                  clojure-mode-hook))
     (add-hook hook #'aggressive-indent-mode))
 
   ;; Use marked as external markdown viewer.
@@ -556,4 +537,4 @@ layers configuration. You are free to put any user code."
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(sp-autoskip-closing-pair (quote always))
  '(sp-cancel-autoskip-on-backward-movement t)
- '(sp-ignore-modes-list (quote (enh-ruby-mode ruby-mode minibuffer-inactive-mode))))
+ '(sp-ignore-modes-list (quote (ruby-mode minibuffer-inactive-mode))))
