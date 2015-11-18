@@ -1,0 +1,10 @@
+#!/bin/bash
+# Install/upgrade basic node tools
+if [ ! $(which node) ]; then
+    echo "go not installed" >&2
+    exit 1
+fi
+echo "Installing tooling for node $(node --version)"
+set -x
+npm install -g tern eslint babel-eslint eslint-plugin-react js-beautify
+npm update -g tern eslint babel-eslint eslint-plugin-react js-beautify
