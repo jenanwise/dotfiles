@@ -1,7 +1,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-
 ## Bash settings
 
 # check the window size after each command and, if necessary, update the values
@@ -12,13 +11,13 @@ shopt -s checkwinsize
 set -o vi
 
 
-## Environment Vars
+## Basic Environment Vars
 
 USERPATH=\
-"./node_modules/.bin":\
-"$HOME/bin":\
-"$HOME/.local/bin":\
-"$HOME/node_modules/.bin"
+        "./node_modules/.bin":\
+        "$HOME/bin":\
+        "$HOME/.local/bin":\
+        "$HOME/node_modules/.bin"
 
 if which /usr/local/bin/brew >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
@@ -31,14 +30,12 @@ fi
 SYSPATH="/usr/local/bin"
 
 export PATH=\
-$USERPATH:\
-$BREWPATH:\
-$SYSPATH:\
-$PATH
+       $USERPATH:\
+       $BREWPATH:\
+       $SYSPATH:\
+       $PATH
 
-export REALHOST=${HOSTNAME%%.*} # Strip off ".local", ".lan", etc. that OSX puts in
-export PYTHONSTARTUP=$HOME/.pythonrc.py
-export EDITOR="emacsclient -n"
+export EDITOR="vim"
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
 export HISTCONTROL=ignoreboth
 export GIT_PS1_SHOWDIRTYSTATE=
@@ -48,37 +45,23 @@ export CLOJURE_USER_LIB="$HOME/.clj"
 export AWS_SECRET_ACCESS_KEY=
 export AWS_ACCESS_KEY_ID=
 
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
 
-## Platform-specific setup
-
-if [ `uname` = "Darwin" ]; then
-    alias shred="/bin/rm -P"
-    BREWBASHCOMPLETION="$BREWPREFIX/etc/bash_completion"
-    if [ -f "$BREWBASHCOMPLETION" ]; then
-        . "$BREWBASHCOMPLETION"
-    fi
-else
-    alias open=`which gnome-open || echo "xdg-open"`
-    alias xpaste='xsel -o'
-fi
-
-## Bash compltion
+## Bash completion
 
 [[ -f /etc/bash_completion ]] && source /etc/bash_completion
 [[ -f ~/.bash_completion ]] && source ~/.bash_completion
+BREWBASHCOMPLETION="$BREWPREFIX/etc/bash_completion"
+if [ -f "$BREWBASHCOMPLETION" ]; then
+    . "$BREWBASHCOMPLETION"
+fi
 
 # make "g" complete like "git"
 complete -o bashdefault -o default -o nospace -F _git g 2>/dev/null \
     || complete -o default -o nospace -F _git g
 
 
-## The Prompt
+## Prompt
 
-# Includes git branch if available.
-# User prompt is colored by host.
-# root is always red.
 if [ "$USER" = root ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
@@ -96,57 +79,69 @@ alias j="fasd_cd -d"
 alias jj="fasd_cd -d -i"
 
 
-
 ## Aliasses
 
 alias cdc="cd \`pwd -P\`"
 alias cleanbak='find . -name "*.bak" -exec rm {} \;'
 alias cleanpyc='find . -name "*.pyc" -exec rm {} \;'
 alias cleanvim='rm $HOME/.viminfo'
+alias d='docker'
+alias dm-env='eval $(docker-machine env default)'
+alias dm-start='docker-machine start default'
+alias dm='docker-machine'
 alias e="edit"
 alias g='git'
-alias groot='cd "`git rev-parse --show-toplevel`"'
 alias gorerun='rerun -c --pattern="**/*.go"'
+alias groot='cd "`git rev-parse --show-toplevel`"'
 alias h="http"
 alias httpd="python -m SimpleHTTPServer"
 alias ll='ls -l'
-alias lx="awk '{ print NR \"\\t\" \$0 }'"  # print 1-based line numbers
 alias path='echo $PATH | tr : "\n"'
-alias subup='(cd `git rev-parse --show-toplevel` && git submodule update)'
 alias pgctl='pg_ctl -D /usr/local/var/postgres'
-alias d='docker'
-alias dm='docker-machine'
-alias dm-start='docker-machine start default'
-alias dm-env='eval $(docker-machine env default)'
 
-## Ruby
+
+## Language setup
+
+### Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-## Golang
+### Golang
 [[ -s "/Users/jenan/.gvm/scripts/gvm" ]] && source "/Users/jenan/.gvm/scripts/gvm"
 
-## Python
+### Node
+export NVM_DIR=~/.nvm
+nvm_sh="$(brew --prefix nvm)/nvm.sh"
+[[ -s "$nvm_sh" ]] && source "$nvm_sh"
+
+### Python
 export WORKON_HOME=~/.virtualenvs
 export VIRTUALENV_USE_DISTRIBUTE=1
 WRAPPERPATH=``
 if which virtualenvwrapper.sh > /dev/null; then source virtualenvwrapper.sh; fi
 
-## Color support for `ls`
-#
+
+## Platform-specific setup
+
+if [ `uname` = "Darwin" ]; then
+    alias shred="/bin/rm -P"
+fi
+
+### Color support for `ls`
+
 # BSD systems have only single-char flags, so -G replaces --color
 # To check for this, we run "ls --version" and check the return status.
 # BSD's ls will complain and give a non-zero exit status, but Linux's ls
 # will happily return with status=0.
 
 if [ "$TERM" != "dumb" ]; then
-    ls --version 2&>/dev/null
-    if [ "$?" = "0" ]; then
+    if [ `ls --version 2&>/dev/null` ]; then
         eval "`dircolors -b`"
         alias ls='ls --color=auto'
     else
         alias ls='ls -G'
     fi
 fi
+
 
 ## SSH
 
