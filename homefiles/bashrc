@@ -14,10 +14,10 @@ set -o vi
 ## Basic Environment Vars
 
 USERPATH=\
-        "./node_modules/.bin":\
-        "$HOME/bin":\
-        "$HOME/.local/bin":\
-        "$HOME/node_modules/.bin"
+"./node_modules/.bin":\
+"$HOME/bin":\
+"$HOME/.local/bin":\
+"$HOME/node_modules/.bin"
 
 if which /usr/local/bin/brew >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
@@ -30,10 +30,10 @@ fi
 SYSPATH="/usr/local/bin"
 
 export PATH=\
-       $USERPATH:\
-       $BREWPATH:\
-       $SYSPATH:\
-       $PATH
+$USERPATH:\
+$BREWPATH:\
+$SYSPATH:\
+$PATH
 
 export EDITOR="vim"
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
