@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 [[ "$1" = "-f" ]] && PREF="" || PREF="echo "
+set -u
+
 CURRENT=$(git rev-parse --abbrev-ref HEAD)
 if [ "$CURRENT" != "master" ]; then
     echo "error: not on master!"

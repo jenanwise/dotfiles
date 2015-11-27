@@ -1,0 +1,11 @@
+#!/bin/bash
+count=$(git rev-list --all --count 2>/dev/null)
+if [ $? -ne 0 ]; then
+    git init
+fi
+
+if [[ $count -gt 0 ]]; then
+    echo "$count commits"
+else
+    git commit --allow-empty -m "Init."
+fi
