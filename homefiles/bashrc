@@ -1,16 +1,3 @@
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
-## Bash settings
-
-# check the window size after each command and, if necessary, update the values
-# of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# vi bindings
-set -o vi
-
-
 ## Basic Environment Vars
 
 USERPATH=\
@@ -29,21 +16,34 @@ fi
 
 SYSPATH="/usr/local/bin"
 
+export GOPATH="$HOME/src/go"
+
 export PATH=\
 $USERPATH:\
+"$GOPATH/bin":\
 $BREWPATH:\
 $SYSPATH:\
 $PATH
 
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
 export EDITOR="vim"
-export LESS="-i -g -M -R -x4 -X -f -F -z-1"
-export HISTCONTROL=ignoreboth
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
-export LEIN_FAST_TRAMPOLINE=y
-export CLOJURE_USER_LIB="$HOME/.clj"
-export AWS_SECRET_ACCESS_KEY=
-export AWS_ACCESS_KEY_ID=
+export HISTCONTROL=ignoreboth
+export LESS="-i -g -M -R -x4 -X -f -F -z-1"
+
+[ -z "$PS1" ] && return
+##### Interactive setup below this point #####
+
+## Bash settings
+
+# check the window size after each command and, if necessary, update the values
+# of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# vi bindings
+set -o vi
 
 
 ## Bash completion
@@ -101,6 +101,10 @@ alias pgctl='pg_ctl -D /usr/local/var/postgres'
 
 
 ## Language setup
+
+## Clojure
+export CLOJURE_USER_LIB="$HOME/.clj"
+export LEIN_FAST_TRAMPOLINE=y
 
 ### Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi

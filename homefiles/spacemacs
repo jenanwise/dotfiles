@@ -500,11 +500,14 @@ layers configuration. You are free to put any user code."
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+ '(cider-cljs-repl
+   "(do (require 'cljs.repl.node) (cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env)))")
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
  '(cua-overwrite-cursor-color "#b58900")
  '(cua-read-only-cursor-color "#859900")
+ '(exec-path-from-shell-arguments (quote ("-l")))
  '(fci-rule-color "#383838")
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
  '(highlight-symbol-colors
