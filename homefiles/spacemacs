@@ -291,11 +291,7 @@ user code."
     :init
     (progn
       ;; goimports is a better gofmt
-      (setq-default gofmt-command "goimports")
-
-      (evil-leader/set-key-for-mode 'go-mode
-        "ofp" 'fill-paragraph
-        "mgi" 'go-goto-imports)))
+      (setq-default gofmt-command "goimports")))
   (add-hook 'go-mode-hook 'set-ret-general))
 
 (defun find-local-file (name)
