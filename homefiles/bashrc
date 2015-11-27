@@ -30,7 +30,6 @@ export AWS_SECRET_ACCESS_KEY=
 export EDITOR="vim"
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
-export HISTCONTROL=ignoreboth
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
 
 [ -z "$PS1" ] && return
@@ -41,6 +40,12 @@ export LESS="-i -g -M -R -x4 -X -f -F -z-1"
 # check the window size after each command and, if necessary, update the values
 # of LINES and COLUMNS.
 shopt -s checkwinsize
+
+shopt -s histappend
+export HISTCONTROL=ignoreboth
+export HISTSIZE=100000
+export HISTFILESIZE=100000
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # vi bindings
 set -o vi
