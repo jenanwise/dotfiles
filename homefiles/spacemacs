@@ -294,6 +294,14 @@ user code."
       (setq-default gofmt-command "goimports")))
   (add-hook 'go-mode-hook 'set-ret-general))
 
+(defun clojure-setup ()
+  (use-package cider
+    :init
+    (progn
+      ;; Override some keybindings.
+      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
+        "sn" 'cider-repl-set-ns))))
+
 (defun find-local-file (name)
   (let ((base (locate-dominating-file
                (buffer-file-name)
@@ -365,6 +373,10 @@ user code."
       (interactive)
       (true-evil-org-eol-call 'clever-insert-item))))
 
+(defun disable-smartparens ()
+  (smartparens-mode 0))
+
+
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
@@ -377,6 +389,7 @@ layers configuration. You are free to put any user code."
   (rebind-evil-keys)
   ;; (magit-2-fixes)
   (golang-setup)
+  (clojure-setup)
   (setup-org-mode)
 
   (setq-default flycheck-disabled-checkers
@@ -468,17 +481,17 @@ layers configuration. You are free to put any user code."
     "otm" 'toggle-margins
     "ofp" 'sp-indent-defun)
 
-  ;; Override some keybindings.
-  (evil-leader/set-key-for-mode 'cider-mode
-    "msn" 'cider-repl-set-ns
-    "ofb" 'cider-format-buffer)
-
   ;; Setup smartparens the way we like it.
   (require 'smartparens-config)
   (sp-use-paredit-bindings)
   (define-key smartparens-mode-map (kbd "C-)") 'sp-slurp-hybrid-sexp)
   (sp-pair "`" "`" :actions '(insert wrap autoskip))
+  (add-hook 'clojure-mode-hook 'disable-smartparens)
+  (add-hook 'clojure-mode-hook 'paredit-mode)
+  (add-hook 'cider-repl-mode 'disable-smartparens)
+  (add-hook 'cider-repl-mode 'paredit-mode)
   )
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
