@@ -110,6 +110,7 @@ alias pgctl='pg_ctl -D /usr/local/var/postgres'
 ## Clojure
 export CLOJURE_USER_LIB="$HOME/.clj"
 export LEIN_FAST_TRAMPOLINE=y
+if which drip > /dev/null; then export LEIN_JAVA_CMD=drip; fi
 
 ### Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
