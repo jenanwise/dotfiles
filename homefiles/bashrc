@@ -16,11 +16,8 @@ fi
 
 SYSPATH="/usr/local/bin"
 
-export GOPATH="$HOME/src/go"
-
 export PATH=\
 $USERPATH:\
-"$GOPATH/bin":\
 $BREWPATH:\
 $SYSPATH:\
 $PATH
@@ -31,6 +28,10 @@ export EDITOR="vim"
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
+
+### Golang
+# This has to happen during non-interactive setup to work with Emacs.
+[[ -s "/Users/jenan/.gvm/scripts/gvm" ]] && source "/Users/jenan/.gvm/scripts/gvm"
 
 [ -z "$PS1" ] && return
 ##### Interactive setup below this point #####
@@ -113,9 +114,6 @@ export LEIN_FAST_TRAMPOLINE=y
 
 ### Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-### Golang
-[[ -s "/Users/jenan/.gvm/scripts/gvm" ]] && source "/Users/jenan/.gvm/scripts/gvm"
 
 ### Node
 export NVM_DIR=~/.nvm
