@@ -270,16 +270,6 @@ user code."
   ;; Use "SPC ;", not "M-;" for comments!
   (global-set-key (kbd "M-;") nil))
 
-(defun magit-2-fixes ()
-  (use-package magit
-    :commands (magit-blame-mode)
-    :config
-    (progn
-      (evil-make-overriding-map magit-blame-mode-map 'normal)
-      (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
-      (setq magit-branch-arguments (remove "--track" magit-branch-arguments))
-      )))
-
 (defun set-ret-js2 ()
   (local-set-key (kbd "RET") 'js2-line-break))
 
@@ -298,9 +288,6 @@ user code."
   (use-package cider
     :init
     (progn
-      (eval-after-load 'flycheck '(flycheck-clojure-setup))
-      (spacemacs/add-flycheck-hook 'cider-mode)
-
       ;; Override some keybindings.
       (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
         "sn" 'cider-repl-set-ns))))
@@ -390,7 +377,6 @@ layers configuration. You are free to put any user code."
   (require 'flycheck)
 
   (rebind-evil-keys)
-  ;; (magit-2-fixes)
   (golang-setup)
   (clojure-setup)
   (setup-org-mode)
@@ -506,9 +492,10 @@ layers configuration. You are free to put any user code."
  '(exec-path-from-shell-arguments (quote ("-l")))
  '(js2-strict-trailing-comma-warning nil)
  '(json-reformat:indent-width 2)
+ '(projectile-enable-caching t)
  '(projectile-globally-ignored-directories
    (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps")))
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps" "node_modules" "vendor")))
  '(ring-bell-function (quote ignore) t)
  '(sp-autoskip-closing-pair (quote always))
  '(sp-cancel-autoskip-on-backward-movement t)
