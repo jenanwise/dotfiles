@@ -8,7 +8,7 @@ USERPATH=\
 
 if which /usr/local/bin/brew >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
-    EMACSPATH="$(/usr/local/bin/brew --prefix emacs-mac)/bin"
+    EMACSPATH="$(/usr/local/bin/brew --prefix emacs)/bin"
     BREWPATH="$BREWPATH/share/npm/bin":$EMACSPATH:"$BREWPATH/opt/coreutils/libexec/gnubin"
 else
     BREWPATH=""
@@ -28,6 +28,9 @@ export EDITOR="vim"
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
+
+### Python
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 ### Golang
 # This has to happen during non-interactive setup to work with Emacs.

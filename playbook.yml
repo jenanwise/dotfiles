@@ -12,7 +12,6 @@
       - colloquy
       - dockertoolbox
       - dropbox
-      - emacs
       - firefox
       - flux
       - font-inconsolata
@@ -70,7 +69,7 @@
       dtrx:
       dynamodb-local:
       emacs-mac: with-spacemacs-icon
-      fasd: 
+      fasd:
       ffmpeg: 
       findutils: with-default-names
       flac: 
@@ -83,6 +82,7 @@
       gnu-tar:
       gnupg: with-default-names
       graphicsmagick: 
+      homebrew/dupes/grep: with-default-names
       httpie:
       ispell: 
       jasper: 
@@ -96,8 +96,7 @@
       nvm:
       phantomjs: 
       postgresql: 
-      python: 
-      python3:
+      pyenv:
       rbenv:
       reattach-to-user-namespace: wrap-pbcopy-and-pbpaste
       redis: 
@@ -108,7 +107,7 @@
       tmux:
       tree: 
       unrar: 
-      vim: without-ruby,with-python3
+      vim: without-ruby,without-python
       watch: 
       wget: 
       youtube-dl:
