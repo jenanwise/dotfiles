@@ -35,7 +35,7 @@ values."
      markdown
      org
      osx
-     puppet
+     ;; puppet
      python
      react
      restclient
@@ -49,7 +49,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(flycheck-clojure)
+   dotspacemacs-additional-packages '(find-file-in-project)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(rainbow-delimiters)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -222,8 +222,12 @@ values."
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
+
   (setq-default git-magit-status-fullscreen t)
   (setq-default ruby-version-manager 'rbenv)
+
+  (setq split-height-threshold nil
+        split-width-threshold 120)
 
   ;; Default to using full symbols for "*" and "#".
   (setq-default evil-symbol-word-search t)
@@ -492,7 +496,7 @@ layers configuration. You are free to put any user code."
  '(exec-path-from-shell-arguments (quote ("-l")))
  '(js2-strict-trailing-comma-warning nil)
  '(json-reformat:indent-width 2)
- '(projectile-enable-caching t)
+ '(projectile-git-command "fast-ls-files")
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps" "node_modules" "vendor")))
@@ -500,3 +504,10 @@ layers configuration. You are free to put any user code."
  '(sp-autoskip-closing-pair (quote always))
  '(sp-cancel-autoskip-on-backward-movement t)
  '(sp-ignore-modes-list (quote (ruby-mode minibuffer-inactive-mode))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))

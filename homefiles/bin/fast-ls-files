@@ -1,0 +1,2 @@
+#!/bin/bash
+git ls-files -co --exclude-standard | grep -Ev '\.(gif|jpe?g|png)$|(^|/)(vendor|node_modules)/' | tr '\n' '\0'
