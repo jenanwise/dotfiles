@@ -313,8 +313,9 @@ in `dotspacemacs/user-config'."
     :init
     (progn
       ;; Override some keybindings.
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
-        "sn" 'cider-repl-set-ns))))
+      (dolist (m '(clojure-mode clojurec-mode clojurescript-mode clojurex-mode))
+        (spacemacs/set-leader-keys-for-major-mode m
+          "sn" 'cider-repl-set-ns)))))
 
 (defun find-local-file (name)
   (let ((base (locate-dominating-file
@@ -513,6 +514,8 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cider-pprint-fn (quote puget))
+ '(cider-repl-use-pretty-printing t)
  '(exec-path-from-shell-arguments (quote ("-l")))
  '(js2-strict-trailing-comma-warning nil)
  '(json-reformat:indent-width 2)
