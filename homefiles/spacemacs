@@ -397,6 +397,9 @@ in `dotspacemacs/user-config'."
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
 
+  ;; temp fix for https://github.com/syl20bnr/spacemacs/issues/4538
+  (setq helm-echo-input-in-header-line nil)
+
   (fix-tramp-slow-projectile)
 
   (require 'flycheck)
