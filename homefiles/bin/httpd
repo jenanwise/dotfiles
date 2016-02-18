@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ "$(python -c 'import sys; print(sys.version_info[0])')" = "2" ]; then
+    python -m SimpleHTTPServer "$@"
+else
+    python -m http.server "$@"
+fi
