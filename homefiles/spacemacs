@@ -496,7 +496,9 @@ layers configuration. You are free to put any user code."
   ;; Custom SPC powers.
   (evil-leader/set-key
     "otm" 'toggle-margins
-    "ofp" 'sp-indent-defun)
+    "ofp" 'sp-indent-defun
+    "cn" 'next-error
+    "cp" 'previous-error)
 
   ;; Setup smartparens the way we like it.
   (require 'smartparens-config)
