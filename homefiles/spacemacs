@@ -35,12 +35,13 @@ values."
      markdown
      org
      osx
-     ;; puppet
+     puppet
      python
      react
      restclient
      ruby
      shell
+     spell-checking
      syntax-checking
      version-control
      yaml
