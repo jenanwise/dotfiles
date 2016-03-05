@@ -36,7 +36,8 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 ### Golang
 # This has to happen during non-interactive setup to work with Emacs.
-[[ -s "/Users/jenan/.gvm/scripts/gvm" ]] && source "/Users/jenan/.gvm/scripts/gvm"
+export GOPATH="$HOME/src/go"
+export PATH="$HOME/src/go/bin:$PATH"
 
 [ -z "$PS1" ] && return
 ##### Interactive setup below this point #####
