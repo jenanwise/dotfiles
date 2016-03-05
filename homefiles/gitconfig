@@ -23,6 +23,9 @@
     todo = grep --heading --line-number --break -e "FIXME" -e "TODO" -e "XXX"
     b = branch
     rev = rev-parse --short
+    d = diff
+    dom = diff origin/master
+    f = fetch
 [branch]
     autosetuprebase = always
 [push]
