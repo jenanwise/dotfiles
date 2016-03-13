@@ -25,3 +25,4 @@ logfile
 .agignore
 .nvmrc
 .python-version
+playbook.retry
