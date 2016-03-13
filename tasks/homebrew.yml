@@ -42,6 +42,3 @@
   shell: brew cask install {{ item }}
   with_items: "{{ applications }}"
   when: "item not in installed_cask_applications.stdout_lines"
-
-- name: Link cask apps
-  command: brew cask linkapps
