@@ -1,5 +1,3 @@
-[include]
-    path = ~/.gitlocal
 [color]
     diff = auto
     branch = auto
@@ -36,3 +34,5 @@
     relativePaths = true
 [url "git@github.com:"]
     insteadOf = https://github.com/
+[user]
+	useconfigonly = true
