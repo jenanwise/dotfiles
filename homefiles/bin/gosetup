@@ -16,3 +16,4 @@ go get -u -f golang.org/x/tools/cmd/goimports
 go get -u -f golang.org/x/tools/cmd/gorename
 go get -u -f golang.org/x/tools/cmd/oracle
 go get -u -f golang.org/x/tools/cmd/vet
+go get -u -f github.com/walle/lll/...
