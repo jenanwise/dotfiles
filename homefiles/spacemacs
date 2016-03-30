@@ -42,6 +42,7 @@ values."
      ruby
      shell
      spell-checking
+     sql
      syntax-checking
      version-control
      yaml
