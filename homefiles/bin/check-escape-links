@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+"""
+Find symlinks that escape the current directory.
+"""
+
+import os
+import itertools
+
+
+def main(top):
+    top = os.path.abspath(os.path.realpath(top))
+    queue = [top]
+    while queue:
+        root = queue.pop()
+        for root, dirs, files in os.walk(root):
+            for path in itertools.chain(files, dirs):
+                path = os.path.abspath(os.path.join(root, path))
+                if os.path.islink(path):
+                    realpath = os.path.abspath(os.path.realpath(path))
+                    if not realpath.startswith(top):
+                        print path, '->', realpath
+
+
+if __name__ == '__main__':
+    main('.')
