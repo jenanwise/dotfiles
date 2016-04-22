@@ -24,6 +24,8 @@
     d = diff
     dom = diff origin/master
     f = fetch
+    set-work = config user.email jenan@stripe.com
+    set-personal = config user.email jenan@jenanwise.com
 [branch]
     autosetuprebase = always
 [push]
@@ -36,3 +38,4 @@
     insteadOf = https://github.com/
 [user]
 	useconfigonly = true
+	name = Jenan Wise
