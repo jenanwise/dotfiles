@@ -3,11 +3,6 @@ set -e
 [[ "$1" = "-f" ]] && PREF="" || PREF="echo "
 set -u
 
-CURRENT=$(git rev-parse --abbrev-ref HEAD)
-if [ "$CURRENT" != "master" ]; then
-    echo "error: not on master!"
-    exit 1
-fi
-for branch in $(git branch --merged | grep -v master); do
+for branch in $(git branch --merged | grep -v master | grep -v staging); do
     $PREF git branch -d "$branch"
 done
