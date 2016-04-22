@@ -92,11 +92,12 @@
       lame: 
       libyaml: 
       llvm: with-lld,with-clang,with-rtti
-      mercurial: 
+      mercurial:
+      netcat:
       nmap: 
       nvm:
       phantomjs: 
-      postgresql: 
+      postgresql:
       pyenv:
       rbenv:
       reattach-to-user-namespace: wrap-pbcopy-and-pbpaste
