@@ -109,7 +109,7 @@ alias h="http"
 alias ll='ls -l'
 alias node='env NODE_NO_READLINE=1 rlwrap node'
 alias path='echo $PATH | tr : "\n"'
-alias pgctl='pg_ctl -D /usr/local/var/postgres'
+alias pgctl='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/log/postgres.log'
 
 
 ## Language setup
