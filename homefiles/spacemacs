@@ -440,6 +440,7 @@ layers configuration. You are free to put any user code."
   (add-to-list 'auto-mode-alist '("bashrc\\'" . shell-script-mode))
   (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
   (add-to-list 'auto-mode-alist '("rest\\'" . restclient-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
 
   ;; Turn on line numbers for all programming modes.
   ;; (add-hook 'prog-mode-hook 'linum-mode)
