@@ -320,6 +320,16 @@ in `dotspacemacs/user-config'."
         (spacemacs/set-leader-keys-for-major-mode m
           "sn" 'cider-repl-set-ns)))))
 
+(defun cider-figwheel-repl ()
+  (interactive)
+  (save-some-buffers)
+  (with-current-buffer (cider-current-repl-buffer)
+    (goto-char (point-max))
+    (insert "(require 'figwheel-sidecar.repl-api)
+             (def _ (figwheel-sidecar.repl-api/start-figwheel!))
+             (figwheel-sidecar.repl-api/cljs-repl)")
+    (cider-repl-return)))
+
 (defun find-local-file (name)
   (let ((base (locate-dominating-file
                (buffer-file-name)
