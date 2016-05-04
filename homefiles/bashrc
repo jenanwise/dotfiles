@@ -29,7 +29,6 @@ export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
 export LEIN_FAST_TRAMPOLINE=y
-if which drip > /dev/null; then export LEIN_JAVA_CMD=drip; fi
 
 ### Python
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
