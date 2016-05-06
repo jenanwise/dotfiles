@@ -42,7 +42,7 @@ values."
      restclient
      ruby
      shell
-     spell-checking
+     (spell-checking :variables spell-checking-enable-by-default nil)
      sql
      syntax-checking
      version-control
