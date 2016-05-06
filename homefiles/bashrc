@@ -38,6 +38,11 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export GOPATH="$HOME/src/go"
 export PATH="$HOME/src/go/bin:$PATH"
 
+### Node
+export NVM_DIR=~/.nvm
+nvm_sh="$(brew --prefix nvm)/nvm.sh"
+[[ -s "$nvm_sh" ]] && source "$nvm_sh"
+
 [ -z "$PS1" ] && return
 ##### Interactive setup below this point #####
 
@@ -118,11 +123,6 @@ export CLOJURE_USER_LIB="$HOME/.clj"
 
 ### Ruby
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-### Node
-export NVM_DIR=~/.nvm
-nvm_sh="$(brew --prefix nvm)/nvm.sh"
-[[ -s "$nvm_sh" ]] && source "$nvm_sh"
 
 ### Python
 export WORKON_HOME=~/.virtualenvs
