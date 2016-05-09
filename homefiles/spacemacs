@@ -526,6 +526,8 @@ layers configuration. You are free to put any user code."
   (add-hook 'clojure-mode-hook 'paredit-mode)
   (add-hook 'cider-repl-mode-hook 'disable-smartparens)
   (add-hook 'cider-repl-mode-hook 'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'disable-smartparens)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 
   (when (file-exists-p "~/.emacs_init_local.el")
     (load-file "~/.emacs_init_local.el"))
