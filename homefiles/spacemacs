@@ -359,6 +359,7 @@ in `dotspacemacs/user-config'."
 (defun web-setup ()
   (setq-default
    js2-basic-offset 2
+   js-indent-level 2
    css-indent-offset 2
    web-mode-markup-indent-offset 2
    web-mode-css-indent-offset 2
@@ -550,7 +551,7 @@ layers configuration. You are free to put any user code."
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps" "node_modules" "vendor")))
- '(ring-bell-function (quote ignore) t)
+ '(ring-bell-function (quote ignore))
  '(sp-autoskip-closing-pair (quote always))
  '(sp-cancel-autoskip-on-backward-movement t)
  '(sp-ignore-modes-list (quote (ruby-mode minibuffer-inactive-mode))))
