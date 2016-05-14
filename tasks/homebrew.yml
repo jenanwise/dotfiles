@@ -1,4 +1,6 @@
 ---
+- include_vars: brews.json
+
 - name: Check homebrew is installed
   stat: path=/usr/local/bin/brew
   register: brew_installed
@@ -20,7 +22,7 @@
 
 - name: Start services at login
   file: src=/usr/local/opt/{{ item }}/homebrew.mxcl.{{ item }}.plist path=~/Library/LaunchAgents/homebrew.mxcl.{{ item }}.plist state=link force=yes
-  with_items: 
+  with_items:
     - postgresql
     - boot2docker
     - redis
@@ -30,7 +32,7 @@
   register: brew_cask_installed
 
 - name: Install homebrew-cask
-  shell: brew install caskroom/cask/brew-cask || brew upgrade caskroom/cask/brew-cask 
+  shell: brew install caskroom/cask/brew-cask || brew upgrade caskroom/cask/brew-cask
   when: brew_cask_installed.stat.exists == false
 
 - name: Check for installed casks

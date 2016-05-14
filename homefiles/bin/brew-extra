@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+"""
+List all unexpected homebrew packages.
+
+Reads desired packages from ~/src/dotfiles/brews.json, which is also used by
+ansible, and then finds all installed homebrew packages that are not dependents
+of any of those desired packages.
+
+This is a slow process, so the output should be redirected.
+
+Usage example:
+
+  brew-extra > /tmp/extra_packages.txt
+"""
+from __future__ import print_function
+
+import json
+import os
+import subprocess
+import sys
+
+
+def main():
+    installed = set(
+        subprocess.check_output(['brew', 'list', '-1']).splitlines())
+    with open(os.path.expanduser('~/src/dotfiles/brews.json')) as fp:
+        brews = json.load(fp)['brews']
+        # Some packages are defined as "homebrew/tapname/package", but then are
+        # listed as just "package", so we split off anything but the last
+        # piece.
+        want = list(sorted([key.split('/')[-1] for key in brews]))
+    allowed = set()
+    for package in want:
+        print('Checking deps for {}'.format(package), file=sys.stderr)
+        deps = subprocess.check_output([
+            'brew', 'uses', '--installed', '--recursive', package]).split()
+        for dep in deps:
+            allowed.add(dep)
+    extra = installed.difference(allowed).difference(want)
+    for package in sorted(extra):
+        print(package)
+
+
+if __name__ == '__main__':
+    main()
