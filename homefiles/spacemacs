@@ -460,14 +460,16 @@ layers configuration. You are free to put any user code."
   ;; dumb-mode experimentations
   (add-hook 'prog-mode-hook 'dumb-jump-mode)
   (define-key evil-normal-state-map (kbd "M-.") #'dumb-jump-go)
-  (add-to-list 'dumb-jump-find-rules
-               '(:type "type" :language "ruby"
-                       :regex "class\\s*JJJ\\s*"
-                       :tests ("class test")))
-  (add-to-list 'dumb-jump-find-rules
-               '(:type "type" :language "ruby"
-                       :regex "module\\s*JJJ\\s*"
-                       :tests ("module test")))
+  (add-hook 'dumb-jump-mode-hook
+            (lambda ()
+              (add-to-list 'dumb-jump-find-rules
+                           '(:type "type" :language "ruby"
+                                   :regex "class\\s*JJJ\\s*"
+                                   :tests ("class test")))
+              (add-to-list 'dumb-jump-find-rules
+                           '(:type "type" :language "ruby"
+                                   :regex "module\\s*JJJ\\s*"
+                                   :tests ("module test")))))
 
   ;; Shift + return to open a URL.
   (global-set-key (kbd "<S-return>") 'browse-url-at-point)
