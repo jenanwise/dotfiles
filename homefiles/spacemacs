@@ -26,6 +26,7 @@ values."
      ansible
      auto-completion
      clojure
+     csv
      dash
      dockerfile
      emacs-lisp
