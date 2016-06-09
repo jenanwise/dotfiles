@@ -249,8 +249,13 @@ any user code here.  The exception is org related code, which should be placed
 in `dotspacemacs/user-config'."
 
   (setq-default git-magit-status-fullscreen t)
+
+  ;; Ruby setup
   (setq-default ruby-version-manager 'rbenv)
   (setq ruby-insert-encoding-magic-comment nil)
+
+  ;; Don't ping weird non-domains
+  (setq ffap-machine-p-known 'reject)
 
   (setq split-height-threshold nil
         split-width-threshold 120)
