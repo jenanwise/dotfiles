@@ -9,6 +9,7 @@
     editor = vim
 
 [alias]
+    s = status
     st = status -s
     stf = ! (git status --short | cut -d\\   -f3)
     dfc = diff --cached
