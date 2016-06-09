@@ -250,6 +250,7 @@ in `dotspacemacs/user-config'."
 
   (setq-default git-magit-status-fullscreen t)
   (setq-default ruby-version-manager 'rbenv)
+  (setq ruby-insert-encoding-magic-comment nil)
 
   (setq split-height-threshold nil
         split-width-threshold 120)
