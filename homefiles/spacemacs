@@ -28,8 +28,9 @@ values."
      clojure
      csv
      dash
-     dockerfile
+     docker
      emacs-lisp
+     extra-langs
      git
      go
      javascript
@@ -38,7 +39,7 @@ values."
      org
      osx
      puppet
-     python
+     (python :variables python-test-runner '(nose pytest))
      react
      restclient
      ruby
