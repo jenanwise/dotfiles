@@ -128,7 +128,7 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 export WORKON_HOME=~/.virtualenvs
 export VIRTUALENV_USE_DISTRIBUTE=1
 WRAPPERPATH=``
-if which virtualenvwrapper.sh > /dev/null; then source virtualenvwrapper.sh; fi
+# if which virtualenvwrapper.sh > /dev/null; then source virtualenvwrapper.sh; fi
 
 
 ## Platform-specific setup
