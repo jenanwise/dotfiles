@@ -40,3 +40,5 @@
 [user]
 	useconfigonly = true
 	name = Jenan Wise
+[diff]
+	compactionHeuristic = true
