@@ -48,7 +48,6 @@
       gitignore: .gitignore
       inputrc: .inputrc
       iterm2: .iterm2
-      lein-profiles.clj: .lein/profiles.clj
       psqlrc: .psqlrc
       spacemacs: .spacemacs
       tmux.conf: .tmux.conf
