@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+#name : jdoc (/** ... */)
+# --
+/**
+ * ${1:desc}
+ *
+ * @return {${2:type}}
+ */

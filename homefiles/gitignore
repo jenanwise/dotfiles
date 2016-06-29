@@ -26,3 +26,4 @@ logfile
 .nvmrc
 .python-version
 playbook.retry
+.yas-compiled-snippets.el
