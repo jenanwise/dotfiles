@@ -24,7 +24,11 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      ansible
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-return-key-behavior nil
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-private-snippets-directory "~/.snippets/")
      clojure
      csv
      dash
@@ -415,7 +419,6 @@ in `dotspacemacs/user-config'."
 
 (defun disable-smartparens ()
   (smartparens-mode 0))
-
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.

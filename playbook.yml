@@ -49,6 +49,7 @@
       inputrc: .inputrc
       iterm2: .iterm2
       psqlrc: .psqlrc
+      snippets: .snippets
       spacemacs: .spacemacs
       tmux.conf: .tmux.conf
       vim: .vim
