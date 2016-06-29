@@ -310,11 +310,8 @@ in `dotspacemacs/user-config'."
   ;; Use "SPC ;", not "M-;" for comments!
   (global-set-key (kbd "M-;") nil))
 
-(defun set-ret-js2 ()
-  (local-set-key (kbd "RET") 'js2-line-break))
-
 (defun set-ret-general ()
-  (local-set-key (kbd "RET") 'indent-new-comment-line))
+  (local-set-key (kbd "RET") 'c-indent-new-comment-line))
 
 (defun golang-setup ()
   (use-package go-mode
@@ -370,6 +367,7 @@ in `dotspacemacs/user-config'."
   (set-checker-status (memq checker flycheck-disabled-checkers) checker))
 
 (defun web-setup ()
+  (add-hook 'js-mode-hook 'set-ret-general)
   (setq-default
    js2-basic-offset 2
    js-indent-level 2
@@ -379,8 +377,6 @@ in `dotspacemacs/user-config'."
    web-mode-code-indent-offset 2
    web-mode-attr-indent-offset 2)
   (with-eval-after-load 'web-mode
-    (add-to-list 'web-mode-comment-formats '("javascript" . "//" ))
-    (add-to-list 'web-mode-comment-formats '("jsx" . "//" ))
     (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))))
@@ -546,6 +542,7 @@ layers configuration. You are free to put any user code."
   (sp-use-paredit-bindings)
   (define-key smartparens-mode-map (kbd "C-)") 'sp-slurp-hybrid-sexp)
   (sp-pair "`" "`" :actions '(insert wrap autoskip))
+  (sp-pair "/*" "*/")
   (add-hook 'clojure-mode-hook 'disable-smartparens)
   (add-hook 'clojure-mode-hook 'paredit-mode)
   (add-hook 'cider-repl-mode-hook 'disable-smartparens)
@@ -567,6 +564,7 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(cider-pprint-fn (quote puget))
  '(cider-repl-use-pretty-printing t)
+ '(comment-multi-line t)
  '(exec-path-from-shell-arguments (quote ("-l")))
  '(js2-strict-trailing-comma-warning nil)
  '(json-reformat:indent-width 2)
