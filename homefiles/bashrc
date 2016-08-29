@@ -4,7 +4,8 @@ USERPATH=\
 "./node_modules/.bin":\
 "$HOME/bin":\
 "$HOME/.local/bin":\
-"$HOME/node_modules/.bin"
+"$HOME/node_modules/.bin":\
+"/opt/google-cloud-sdk/bin"
 
 if which /usr/local/bin/brew >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
