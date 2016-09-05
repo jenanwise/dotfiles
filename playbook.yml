@@ -8,8 +8,6 @@
     applications:
       - 1password
       - alfred
-      - chromecast
-      - colloquy
       - dropbox
       - firefox
       - font-inconsolata
@@ -19,11 +17,9 @@
       - iterm2
       - keepingyouawake
       - paw
-      - skype
       - slack
       - spectacle
       - utc-menu-clock
-      - virtualbox
       - vlc
       - wireshark
       - xquartz
