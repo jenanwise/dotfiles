@@ -14,7 +14,6 @@
     "curl": "",
     "dtrx": "",
     "dynamodb-local": "",
-    "emacs": "HEAD,with-cocoa",
     "fasd": "",
     "ffmpeg": "",
     "findutils": "with-default-names",
