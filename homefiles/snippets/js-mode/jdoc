@@ -4,5 +4,5 @@
 /**
  * ${1:desc}
  *
- * @return {${2:type}}
+ * @return {${2:type}} ${3:returns}
  */
