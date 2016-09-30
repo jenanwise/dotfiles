@@ -25,7 +25,6 @@ values."
      ;; ----------------------------------------------------------------
      ansible
      (auto-completion :variables
-                      auto-completion-return-key-behavior nil
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip t
                       auto-completion-private-snippets-directory "~/.snippets/")
@@ -311,16 +310,16 @@ in `dotspacemacs/user-config'."
   ;; Use "SPC ;", not "M-;" for comments!
   (global-set-key (kbd "M-;") nil))
 
-(defun set-ret-general ()
-  (local-set-key (kbd "RET") 'c-indent-new-comment-line))
-
 (defun golang-setup ()
   (use-package go-mode
     :init
     (progn
       ;; goimports is a better gofmt
       (setq-default gofmt-command "goimports")))
-  (add-hook 'go-mode-hook 'set-ret-general))
+  (add-hook
+   'go-mode-hook
+   (lambda ()
+     (local-set-key (kbd "RET") 'indent-new-comment-line))))
 
 (defun clojure-setup ()
   (use-package cider
@@ -368,13 +367,10 @@ in `dotspacemacs/user-config'."
   (set-checker-status (memq checker flycheck-disabled-checkers) checker))
 
 (defun web-setup ()
-  (require 'flycheck-flow)
-  (eval-after-load 'flycheck
-    '(progn
-       (flycheck-add-mode 'javascript-flow 'react-mode)
-       ))
-
-  (add-hook 'js-mode-hook 'set-ret-general)
+  (add-hook
+   'js-mode-hook
+   (lambda ()
+     (local-set-key (kbd "RET") 'c-indent-new-comment-line)))
   (setq-default
    js2-basic-offset 2
    js-indent-level 2
@@ -474,16 +470,6 @@ layers configuration. You are free to put any user code."
   ;; dumb-mode experimentations
   (add-hook 'prog-mode-hook 'dumb-jump-mode)
   (define-key evil-normal-state-map (kbd "M-.") #'dumb-jump-go)
-  (add-hook 'dumb-jump-mode-hook
-            (lambda ()
-              (add-to-list 'dumb-jump-find-rules
-                           '(:type "type" :language "ruby"
-                                   :regex "class\\s*JJJ\\s*"
-                                   :tests ("class test")))
-              (add-to-list 'dumb-jump-find-rules
-                           '(:type "type" :language "ruby"
-                                   :regex "module\\s*JJJ\\s*"
-                                   :tests ("module test")))))
 
   ;; Shift + return to open a URL.
   (global-set-key (kbd "<S-return>") 'browse-url-at-point)
