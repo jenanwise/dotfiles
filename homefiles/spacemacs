@@ -613,7 +613,7 @@ layers configuration. You are free to put any user code."
  '(json-reformat:indent-width 2)
  '(projectile-globally-ignored-directories
    (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps" "node_modules" "vendor")))
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "Godeps" "node_modules" "vendor" "manhattan")))
  '(ring-bell-function (quote ignore))
  '(sp-autoskip-closing-pair (quote always))
  '(sp-cancel-autoskip-on-backward-movement t)
