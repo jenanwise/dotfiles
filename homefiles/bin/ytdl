@@ -1,0 +1,5 @@
+#!/bin/bash
+while ! youtube-dl "$1"; do
+    echo "Failed -- retrying..."
+    sleep 2
+done
