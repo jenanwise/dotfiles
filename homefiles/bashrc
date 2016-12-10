@@ -32,7 +32,7 @@ export LESS="-i -g -M -R -x4 -X -f -F -z-1"
 export LEIN_FAST_TRAMPOLINE=y
 
 ### Python
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 ### Golang
 # This has to happen during non-interactive setup to work with Emacs.
