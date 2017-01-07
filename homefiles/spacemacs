@@ -6,13 +6,11 @@
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
 values."
-
   (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
   (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
   (add-to-list 'package-pinned-packages '(cljr-helm . "melpa-stable") t)
   (add-to-list 'package-pinned-packages '(ac-cider . "melpa-stable") t)
-
 
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
@@ -44,7 +42,6 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ansible
      (auto-completion :variables
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip t
