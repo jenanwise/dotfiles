@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import argparse
+import csv
+import sys
+
+
+def join_csv(acc, join_keys, filename):
+    with open(filename) as fp:
+        reader = csv.DictReader(fp)
+        for row in reader:
+            join_vals = tuple(row[join_key] for join_key in join_keys)
+            joined = acc.setdefault(join_vals, {})
+            for key, val in row.iteritems():
+                if key in join_keys:
+                    continue
+                elif key in joined:
+                    err = 'field "{}" appears multiple times for {}'.format(
+                        key, join_vals)
+                    raise ValueError(err)
+                else:
+                    joined[key] = val
+
+
+def join_csvs(join_keys, filenames):
+    result = {}
+    for filename in filenames:
+        join_csv(result, join_keys, filename)
+    fieldnames = set()
+    for row in result.itervalues():
+        fieldnames = fieldnames.union(set(row.keys()))
+    fieldnames = join_keys + list(sorted(fieldnames))
+    writer = csv.DictWriter(sys.stdout, fieldnames)
+    writer.writeheader()
+    for join_vals, vals in sorted(result.items()):
+        row = dict(zip(join_keys, join_vals))
+        row.update(vals)
+        writer.writerow(row)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--join', action='append', required=True)
+    parser.add_argument('csv', nargs='+')
+    args = parser.parse_args()
+    join_csvs(args.join, args.csv)
+
+
+if __name__ == '__main__':
+    main()
