@@ -445,6 +445,20 @@ in `dotspacemacs/user-config'."
    web-mode-code-indent-offset 2
    web-mode-attr-indent-offset 2)
   (with-eval-after-load 'web-mode
+    ;; This is gross. web-mode-fill-paragraph doesn't work, and you can't seem
+    ;; to call c-fill-paragraph directly, so we re-bind M-q to temporarily go
+    ;; into c-mode, fill the paragraph, and jump back.
+    (add-hook
+     'web-mode-hook
+     (lambda ()
+       (local-set-key (kbd "M-q")
+                      (lambda ()
+                        (interactive)
+                        (c-mode)
+                        (fill-paragraph)
+                        (web-mode)))))
+    (add-to-list 'web-mode-comment-formats '("jsx" . "//" ))
+    (add-to-list 'web-mode-comment-formats '("javascript" . "//" ))
     (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))))
@@ -530,6 +544,7 @@ layers configuration. You are free to put any user code."
   (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode))
   (add-to-list 'auto-mode-alist '("rest\\'" . restclient-mode))
   (add-to-list 'auto-mode-alist '("\\.html.template\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
 
   ;; dumb-mode experimentations
   (add-hook 'prog-mode-hook 'dumb-jump-mode)
