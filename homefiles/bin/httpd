@@ -1,6 +1,14 @@
 #!/bin/bash
-if [ "$(python -c 'import sys; print(sys.version_info[0])')" = "2" ]; then
-    python -m SimpleHTTPServer "$@"
+
+if [[ $# -eq 0 ]]; then
+    PORT=3000
 else
-    python -m http.server "$@"
+    PORT=$1
+    shift
+fi
+
+if [ "$(python -c 'import sys; print(sys.version_info[0])')" = "2" ]; then
+    python -m SimpleHTTPServer "$PORT" "$@"
+else
+    python -m http.server "$PORT" "$@"
 fi
