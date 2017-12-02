@@ -1,7 +1,6 @@
 {
   "brews": {
     "ansible": "",
-    "ant": "",
     "aspell": "",
     "autoconf": "",
     "automake": "",
@@ -13,7 +12,6 @@
     "ctags": "",
     "curl": "",
     "dtrx": "",
-    "dynamodb-local": "",
     "fasd": "",
     "ffmpeg": "",
     "findutils": "with-default-names",
@@ -40,7 +38,6 @@
     "libtool": "",
     "libyaml": "",
     "llvm": "with-lld,with-clang,with-rtti",
-    "maven": "",
     "mercurial": "",
     "netcat": "",
     "nmap": "",
@@ -54,7 +51,6 @@
     "rbenv": "",
     "readline": "",
     "reattach-to-user-namespace": "wrap-pbcopy-and-pbpaste",
-    "redis": "",
     "rlwrap": "",
     "ruby-build": "",
     "sloccount": "",

@@ -35,8 +35,6 @@
     user = jenanwise
 [status]
     relativePaths = true
-[url "git@github.com:"]
-    insteadOf = https://github.com/
 [user]
 	useconfigonly = true
 	name = Jenan Wise

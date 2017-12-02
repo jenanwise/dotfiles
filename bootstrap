@@ -14,5 +14,5 @@ cd "$dotfiles"
 which brew >/dev/null || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # Run ansible
-brew install ansible || brew upgrade ansible
+which ansible >/dev/null || brew install ansible || brew upgrade ansible
 ansible-playbook -i hosts playbook.yml

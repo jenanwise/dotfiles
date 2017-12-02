@@ -20,13 +20,6 @@
   homebrew: name={{ item.key }} state=present install_options={{ item.value }}
   with_dict: "{{ brews }}"
 
-- name: Start services at login
-  file: src=/usr/local/opt/{{ item }}/homebrew.mxcl.{{ item }}.plist path=~/Library/LaunchAgents/homebrew.mxcl.{{ item }}.plist state=link force=yes
-  with_items:
-    - postgresql
-    - boot2docker
-    - redis
-
 - name: Check homebrew-cask is installed
   stat: path=/usr/local/bin/brew-cask.rb
   register: brew_cask_installed

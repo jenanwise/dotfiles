@@ -8,28 +8,24 @@
     applications:
       - 1password
       - alfred
+      - dash
       - dropbox
       - emacs
       - firefox
-      - font-inconsolata
       - font-source-code-pro
       - google-chrome
-      - google-drive
       - iterm2
       - keepingyouawake
-      - paw
       - slack
       - spectacle
+      - spotify
       - utc-menu-clock
+      - visual-studio-code
       - vlc
-      - wireshark
-      - xquartz
     home: "/Users/{{ whoami.stdout }}"
     src_home: "/Users/{{ whoami.stdout }}/src"
     taps:
       - caskroom/fonts
-      - homebrew/dupes
-      - homebrew/science
     python_packages:
       - ipython
       - autopep8
