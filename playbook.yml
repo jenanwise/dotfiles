@@ -47,6 +47,8 @@
       tmux.conf: .tmux.conf
       vim: .vim
       vimrc: .vimrc
+      vscode_settings.json: "Library/Application Support/Code/User/settings.json"
+      vscode_keybindings.json: "Library/Application Support/Code/User/keybindings.json"
   tasks:
     - include: tasks/files.yml
     - include: tasks/preferences.yml
