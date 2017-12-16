@@ -6,21 +6,15 @@
     gopath: "{{ home_dir }}/src/go"
     backup_dir: "{{ inventory_dir }}/backups"
     applications:
-      - 1password
       - alfred
-      - dash
       - dropbox
       - emacs
       - firefox
       - font-source-code-pro
-      - google-chrome
       - iterm2
       - keepingyouawake
-      - slack
       - spectacle
-      - spotify
       - utc-menu-clock
-      - visual-studio-code
       - vlc
     home: "/Users/{{ whoami.stdout }}"
     src_home: "/Users/{{ whoami.stdout }}/src"
