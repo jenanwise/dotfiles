@@ -36,8 +36,9 @@ export LEIN_FAST_TRAMPOLINE=y
 
 ### Golang
 # This has to happen during non-interactive setup to work with Emacs.
-export GOPATH="$HOME/src/go"
-export PATH="$HOME/src/go/bin:$PATH"
+export GOPATH="$HOME/go"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="/usr/local/opt/go@1.8/bin:$PATH"
 
 ### Node
 export NVM_DIR=~/.nvm
@@ -166,3 +167,5 @@ done
 
 [[ -f ~/.bashrc_local ]] && source ~/.bashrc_local
 [[ -f ~/.keys_env ]] && source ~/.keys_env
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
