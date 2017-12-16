@@ -8,5 +8,7 @@
         "suppressNoRepositoryWarning": false,
         "suppressUpdateNotice": false,
         "suppressWelcomeNotice": true
-    }
+    },
+    "omnisharp.useMono": true,
+    "csharp.referencesCodeLens.enabled": false
 }
