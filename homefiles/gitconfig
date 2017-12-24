@@ -24,6 +24,7 @@
     rev = rev-parse --short
     d = diff
     dom = diff origin/master
+    rom = rebase -i origin/master
     f = fetch
     set-work = config user.email jenan@stripe.com
     set-personal = config user.email jenan@jenanwise.com

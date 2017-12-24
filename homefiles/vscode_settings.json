@@ -10,5 +10,30 @@
         "suppressWelcomeNotice": true
     },
     "omnisharp.useMono": true,
-    "csharp.referencesCodeLens.enabled": false
+    "csharp.referencesCodeLens.enabled": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "Godeps/**": true,
+        "vendor/**": true,
+    },
+    "editor.formatOnSave": true,
+    "prettier.arrowParens": "always",
+    "prettier.bracketSpacing": false,
+    "prettier.trailingComma": "es5",
+    "prettier.singleQuote": true,
+    "workbench.activityBar.visible": false,
+    "workbench.startupEditor": "newUntitledFile",
+    "window.zoomLevel": 2,
+    "workbench.editor.showTabs": false,
+    "files.associations": {
+        "bashrc": "shellscript",
+    },
+    "vim.useSystemClipboard": true,
+    "workbench.colorTheme": "Dracula"
 }

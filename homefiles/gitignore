@@ -27,3 +27,4 @@ logfile
 .python-version
 playbook.retry
 .yas-compiled-snippets.el
+.vscode
