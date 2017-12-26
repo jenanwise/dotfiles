@@ -19,5 +19,9 @@
     {
         "key": "alt+cmd+left",
         "command": "-workbench.action.previousEditor"
+    },
+    {
+        "key": "shift+cmd+u",
+        "command": "workbench.action.showErrorsWarnings"
     }
 ]
