@@ -17,6 +17,7 @@
     "findutils": "with-default-names",
     "flac": "",
     "fpp": "",
+    "fzf": "",
     "fswatch": "",
     "gcc": "",
     "gdb": "with-homebrewed-python,with-all-targets",
