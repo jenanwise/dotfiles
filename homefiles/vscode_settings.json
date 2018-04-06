@@ -6,6 +6,8 @@
         "suppressGitVersionWarning": false,
         "suppressLineUncommittedWarning": false,
         "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressShowKeyBindingsNotice": true,
         "suppressUpdateNotice": true,
         "suppressWelcomeNotice": true
     },
@@ -22,18 +24,29 @@
         "Godeps/**": true,
         "vendor/**": true,
     },
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    "[go]": {
+        "editor.formatOnSave": true
+    },
     "prettier.arrowParens": "always",
     "prettier.bracketSpacing": false,
     "prettier.trailingComma": "es5",
     "prettier.singleQuote": true,
     "workbench.activityBar.visible": false,
     "workbench.startupEditor": "newUntitledFile",
-    "window.zoomLevel": 2,
+    "window.zoomLevel": 1,
     "workbench.editor.showTabs": false,
     "files.associations": {
         "bashrc": "shellscript",
     },
     "vim.useSystemClipboard": true,
-    "workbench.colorTheme": "Dracula"
+    "workbench.colorTheme": "Dracula",
+    "javascript.validate.enable": false,
+    "extensions.ignoreRecommendations": true,
+    "editor.minimap.enabled": false,
+    "gitlens.showWhatsNewAfterUpgrades": false,
+    "gitlens.keymap": "chorded"
 }
