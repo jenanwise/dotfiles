@@ -26,7 +26,7 @@
     "gnupg": "with-default-names",
     "go": "",
     "graphicsmagick": "",
-    "homebrew/dupes/grep": "with-default-names",
+    "grep": "with-default-names",
     "httpie": "",
     "ispell": "",
     "jpeg": "",

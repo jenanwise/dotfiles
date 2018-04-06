@@ -1,4 +1,7 @@
 ---
+- name: Touch fonts folder
+  command: mkdir -p "{{ home_dir}}/Library/Fonts"
+
 - name: Remove ACLs that prevent moving the fonts folder
   command: /bin/chmod -f -N "{{ home_dir }}/Library/Fonts"
 
@@ -6,6 +9,9 @@
   stat: follow=no path="{{ home_dir }}/{{ item.value }}"
   with_dict: "{{ homefiles }}"
   register: homefiles_stat
+
+- name: Touch backup directory
+  command: mkdir -p "{{ backup_dir }}"
 
 - name: Backup unlinked home directory files
   command: mv "{{ item.stat.path }}" "{{ backup_dir }}/{{ item.item.key }}.{{ ansible_date_time.epoch }}"
