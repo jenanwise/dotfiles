@@ -12,9 +12,12 @@ fi
 gsed -i 's/m_ExternalVersionControlSupport: .*/m_ExternalVersionControlSupport: Visible Meta Files/' "$EDITOR_SETTINGS_PATH"
 gsed -i 's/m_ExternalVersionControlSupport: .*/m_ExternalVersionControlSupport: Visible Meta Files/' "$EDITOR_SETTINGS_PATH"
 
-curl -s -o ".gitignore" "https://raw.githubusercontent.com/github/gitignore/master/Unity.gitignore"
-
 mkdir -p Assets/Editor
 mkdir -p Assets/Materials
+mkdir -p Assets/Prefabs
 mkdir -p Assets/Scenes
 mkdir -p Assets/Scripts
+mkdir -p Assets/Shaders
+
+curl -s -o ".gitignore" "https://raw.githubusercontent.com/github/gitignore/master/Unity.gitignore"
+

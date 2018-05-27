@@ -1,11 +1,6 @@
 {
     "gitlens.advanced.messages": {
-        "suppressCommitHasNoPreviousCommitWarning": false,
-        "suppressCommitNotFoundWarning": false,
-        "suppressFileNotUnderSourceControlWarning": false,
-        "suppressGitVersionWarning": false,
-        "suppressLineUncommittedWarning": false,
-        "suppressNoRepositoryWarning": false,
+        "suppressShowKeyBindingsNotice": true,
         "suppressUpdateNotice": true,
         "suppressWelcomeNotice": true
     },
@@ -29,11 +24,19 @@
     "prettier.singleQuote": true,
     "workbench.activityBar.visible": false,
     "workbench.startupEditor": "newUntitledFile",
-    "window.zoomLevel": 2,
+    "window.zoomLevel": 1,
     "workbench.editor.showTabs": false,
     "files.associations": {
         "bashrc": "shellscript",
     },
     "vim.useSystemClipboard": true,
-    "workbench.colorTheme": "Dracula"
+    "workbench.colorTheme": "Dracula",
+    "[csharp]": {},
+    "gitlens.codeLens.scopes": [],
+    "gitlens.keymap": "none",
+    "clojureVSCode.autoStartNRepl": false,
+    "clojureVSCode.formatOnSave": false,
+    "gitlens.historyExplorer.enabled": true,
+    "rust.mode": null,
+    "files.defaultLanguage": "markdown",
 }
