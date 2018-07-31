@@ -4,13 +4,19 @@ set -u
 set -x
 
 EDITOR_SETTINGS_PATH="ProjectSettings/EditorSettings.asset"
+PROJECT_SETTINGS_PATH="ProjectSettings/ProjectSettings.asset"
 if [ ! -f "$EDITOR_SETTINGS_PATH" ]; then
     echo "\"$EDITOR_SETTINGS_PATH\" not found."
+    exit 1
+fi
+if [ ! -f "$PROJECT_SETTINGS_PATH" ]; then
+    echo "\"$PROJECT_SETTINGS_PATH\" not found."
     exit 1
 fi
 
 gsed -i 's/m_ExternalVersionControlSupport: .*/m_ExternalVersionControlSupport: Visible Meta Files/' "$EDITOR_SETTINGS_PATH"
 gsed -i 's/m_ExternalVersionControlSupport: .*/m_ExternalVersionControlSupport: Visible Meta Files/' "$EDITOR_SETTINGS_PATH"
+gsed -i 's/scriptingRuntimeVersion: 0/scriptingRuntimeVersion: 1/' "$PROJECT_SETTINGS_PATH"
 
 mkdir -p Assets/Editor
 mkdir -p Assets/Materials
