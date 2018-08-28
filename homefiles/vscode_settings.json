@@ -48,5 +48,10 @@
     "extensions.ignoreRecommendations": true,
     "editor.minimap.enabled": false,
     "gitlens.showWhatsNewAfterUpgrades": false,
-    "gitlens.keymap": "chorded"
+    "gitlens.keymap": "chorded",
+    "rest-client.previewOption": "body",
+    "rest-client.previewResponseInUntitledDocument": true,
+    "rest-client.enableTelemetry": false,
+    "go.lintOnSave": "off",
+    "gitlens.historyExplorer.enabled": true
 }
