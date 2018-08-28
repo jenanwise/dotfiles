@@ -93,6 +93,7 @@ fi
 
 ## fasd/autojump
 eval "$(fasd --init auto)"
+unalias s
 alias j="fasd_cd -d"
 alias jj="fasd_cd -d -i"
 
@@ -112,6 +113,7 @@ alias h="http"
 alias ipy='ipython --TerminalInteractiveShell.editing_mode=vi'
 alias ll='ls -l'
 alias node='env NODE_NO_READLINE=1 rlwrap node'
+alias nowsp='now --static --public'
 alias path='echo $PATH | tr : "\n"'
 alias pgctl='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/log/postgres.log'
 
