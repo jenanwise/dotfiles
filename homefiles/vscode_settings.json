@@ -53,5 +53,12 @@
     "rest-client.previewResponseInUntitledDocument": true,
     "rest-client.enableTelemetry": false,
     "go.lintOnSave": "off",
-    "gitlens.historyExplorer.enabled": true
+    "gitlens.historyExplorer.enabled": true,
+    "[csharp]": {},
+    "gitlens.codeLens.scopes": [],
+    "clojureVSCode.autoStartNRepl": false,
+    "clojureVSCode.formatOnSave": false,
+    "gitlens.historyExplorer.enabled": true,
+    "rust.mode": null,
+    "files.defaultLanguage": "markdown"
 }

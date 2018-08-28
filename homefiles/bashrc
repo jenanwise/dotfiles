@@ -33,6 +33,7 @@ export LEIN_FAST_TRAMPOLINE=y
 
 ### Python
 #if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+export PATH=/usr/local/anaconda3/bin:"$PATH"
 
 ### Golang
 # This has to happen during non-interactive setup to work with Emacs.
