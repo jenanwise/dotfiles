@@ -1,64 +1,47 @@
 {
-    "gitlens.advanced.messages": {
-        "suppressCommitHasNoPreviousCommitWarning": false,
-        "suppressCommitNotFoundWarning": false,
-        "suppressFileNotUnderSourceControlWarning": false,
-        "suppressGitVersionWarning": false,
-        "suppressLineUncommittedWarning": false,
-        "suppressNoRepositoryWarning": false,
-        "suppressResultsExplorerNotice": false,
-        "suppressShowKeyBindingsNotice": true,
-        "suppressUpdateNotice": true,
-        "suppressWelcomeNotice": true
-    },
-    "omnisharp.useMono": true,
-    "csharp.referencesCodeLens.enabled": false,
-    "explorer.confirmDragAndDrop": false,
-    "explorer.confirmDelete": false,
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
-        "Godeps/**": true,
-        "vendor/**": true,
-    },
-    "editor.formatOnSave": false,
-    "[javascript]": {
-        "editor.formatOnSave": true
-    },
-    "[go]": {
-        "editor.formatOnSave": true
-    },
-    "prettier.arrowParens": "always",
-    "prettier.bracketSpacing": false,
-    "prettier.trailingComma": "es5",
-    "prettier.singleQuote": true,
-    "workbench.activityBar.visible": false,
-    "workbench.startupEditor": "newUntitledFile",
-    "window.zoomLevel": 1,
-    "workbench.editor.showTabs": false,
-    "files.associations": {
-        "bashrc": "shellscript",
-    },
-    "vim.useSystemClipboard": true,
-    "workbench.colorTheme": "Dracula",
-    "javascript.validate.enable": false,
-    "extensions.ignoreRecommendations": true,
-    "editor.minimap.enabled": false,
-    "gitlens.showWhatsNewAfterUpgrades": false,
-    "gitlens.keymap": "chorded",
-    "rest-client.previewOption": "body",
-    "rest-client.previewResponseInUntitledDocument": true,
-    "rest-client.enableTelemetry": false,
-    "go.lintOnSave": "off",
-    "gitlens.historyExplorer.enabled": true,
-    "[csharp]": {},
-    "gitlens.codeLens.scopes": [],
-    "clojureVSCode.autoStartNRepl": false,
-    "clojureVSCode.formatOnSave": false,
-    "gitlens.historyExplorer.enabled": true,
-    "rust.mode": null,
-    "files.defaultLanguage": "markdown"
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true,
+    "suppressUpdateNotice": true,
+    "suppressWelcomeNotice": true
+  },
+  "csharp.referencesCodeLens.enabled": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "Godeps/**": true,
+    "vendor/**": true
+  },
+  "editor.formatOnSave": true,
+  "prettier.arrowParens": "always",
+  "prettier.bracketSpacing": false,
+  "prettier.trailingComma": "es5",
+  "prettier.singleQuote": true,
+  "workbench.activityBar.visible": false,
+  "workbench.startupEditor": "newUntitledFile",
+  "window.zoomLevel": 1,
+  "workbench.editor.showTabs": false,
+  "files.associations": {
+    "bashrc": "shellscript"
+  },
+  "vim.useSystemClipboard": true,
+  "workbench.colorTheme": "Dracula",
+  "[csharp]": {},
+  "gitlens.keymap": "none",
+  "clojureVSCode.autoStartNRepl": false,
+  "clojureVSCode.formatOnSave": false,
+  "files.defaultLanguage": "markdown",
+  "rust.mode": "rls",
+  "rust-client.channel": "stable",
+  "rust.rustup": {
+    "toolchain": "stable-x86_64-apple-darwin",
+    "nightlyToolchain": "nightly-2019-03-10-x86_64-apple-darwin"
+  },
+  "rust.rls": {
+    "useRustfmt": true
+  }
 }
