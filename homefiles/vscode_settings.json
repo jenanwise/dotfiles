@@ -43,5 +43,6 @@
   },
   "rust.rls": {
     "useRustfmt": true
-  }
+  },
+  "python.formatting.provider": "black"
 }

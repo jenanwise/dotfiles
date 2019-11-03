@@ -1,16 +1,13 @@
 ## Basic Environment Vars
 
 USERPATH=\
-"./node_modules/.bin":\
 "$HOME/bin":\
-"$HOME/.local/bin":\
-"$HOME/node_modules/.bin":\
-"/opt/google-cloud-sdk/bin"
+"$HOME/.local/bin"
 
 if which /usr/local/bin/brew >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
     EMACSPATH="$(/usr/local/bin/brew --prefix emacs)/bin"
-    BREWPATH="$BREWPATH/share/npm/bin":$EMACSPATH:"$BREWPATH/opt/coreutils/libexec/gnubin"
+    BREWPATH="$BREWPREFIX/share/npm/bin":$EMACSPATH:"$BREWPREFIX/opt/coreutils/libexec/gnubin:$BREWPREFIX/opt/python/libexec/bin"
 else
     BREWPATH=""
 fi
@@ -23,28 +20,11 @@ $BREWPATH:\
 $SYSPATH:\
 $PATH
 
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
 export EDITOR="vim"
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
 export LEIN_FAST_TRAMPOLINE=y
-
-### Python
-#if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-export PATH=/usr/local/anaconda3/bin:"$PATH"
-
-### Golang
-# This has to happen during non-interactive setup to work with Emacs.
-export GOPATH="$HOME/go"
-export PATH="$HOME/go/bin:$PATH"
-export PATH="/usr/local/opt/go@1.8/bin:$PATH"
-
-### Node
-export NVM_DIR=~/.nvm
-nvm_sh="$(brew --prefix nvm)/nvm.sh"
-[[ -s "$nvm_sh" ]] && source "$nvm_sh"
 
 [ -z "$PS1" ] && return
 ##### Interactive setup below this point #####
@@ -105,42 +85,19 @@ alias cdc="cd \`pwd -P\`"
 alias cleanbak='find . -name "*.bak" -exec rm {} \;'
 alias cleanpyc='find . -name "*.pyc" -exec rm {} \;'
 alias cleanvim='rm $HOME/.viminfo'
-alias d='docker'
-alias e="edit"
 alias g='git'
-alias gorerun='rerun -c --pattern="**/*.go"'
 alias groot='cd "`git rev-parse --show-toplevel`"'
-alias h="http"
 alias ipy='ipython --TerminalInteractiveShell.editing_mode=vi'
 alias ll='ls -l'
 alias node='env NODE_NO_READLINE=1 rlwrap node'
-alias nowsp='now --static --public'
-alias path='echo $PATH | tr : "\n"'
 alias pgctl='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/log/postgres.log'
 
 
-## Language setup
+## Python
 
-## Clojure
-export CLOJURE_USER_LIB="$HOME/.clj"
+export PIPENV_VENV_IN_PROJECT=1
 
-### Ruby
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-### Python
-export WORKON_HOME=~/.virtualenvs
-export VIRTUALENV_USE_DISTRIBUTE=1
-WRAPPERPATH=``
-# if which virtualenvwrapper.sh > /dev/null; then source virtualenvwrapper.sh; fi
-
-
-## Platform-specific setup
-
-if [ `uname` = "Darwin" ]; then
-    alias shred="/bin/rm -P"
-fi
-
-### Color support for `ls`
+## Color support for `ls`
 
 # BSD systems have only single-char flags, so -G replaces --color
 # To check for this, we run "ls --version" and check the return status.
@@ -148,7 +105,7 @@ fi
 # will happily return with status=0.
 
 if [ "$TERM" != "dumb" ]; then
-    if [ `ls --version 2&>/dev/null` ]; then
+    if ls --version 2&>/dev/null; then
         eval "`dircolors -b`"
         alias ls='ls --color=auto'
     else

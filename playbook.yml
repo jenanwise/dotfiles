@@ -20,17 +20,12 @@
     src_home: "/Users/{{ whoami.stdout }}/src"
     taps:
       - caskroom/fonts
-    python_packages:
-      - ipython
-      - autopep8
-      - flake8
-      - pep8
-      - pyflakes
     homefiles:
       agignore: .agignore
       bashrc: .bashrc
       bin: bin
       clj: .clj
+      doom.d: .doom.d
       fzf.bash: .fzf.bash
       gitconfig: .gitconfig
       gitignore: .gitignore
