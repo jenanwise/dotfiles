@@ -2,9 +2,10 @@
 
 USERPATH=\
 "$HOME/bin":\
-"$HOME/.local/bin"
+"$HOME/.local/bin":\
+"$HOME/.emacs.d/bin"
 
-if which /usr/local/bin/brew >/dev/null; then
+if /usr/local/bin/brew -v >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
     EMACSPATH="$(/usr/local/bin/brew --prefix emacs)/bin"
     BREWPATH="$BREWPREFIX/share/npm/bin":$EMACSPATH:"$BREWPREFIX/opt/coreutils/libexec/gnubin:$BREWPREFIX/opt/python/libexec/bin"
@@ -47,10 +48,11 @@ set -o vi
 
 ## Bash completion
 
-[[ -f /etc/bash_completion ]] && source /etc/bash_completion
+# shellcheck source=/dev/null
 [[ -f ~/.bash_completion ]] && source ~/.bash_completion
 BREWBASHCOMPLETION="$BREWPREFIX/etc/bash_completion"
 if [ -f "$BREWBASHCOMPLETION" ]; then
+    # shellcheck source=/dev/null
     . "$BREWBASHCOMPLETION"
 fi
 
@@ -126,7 +128,11 @@ done
 
 ## Private env settings
 
+# shellcheck source=/dev/null
 [[ -f ~/.bashrc_local ]] && source ~/.bashrc_local
+
+# shellcheck source=/dev/null
 [[ -f ~/.keys_env ]] && source ~/.keys_env
 
+# shellcheck source=/dev/null
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
