@@ -8,3 +8,4 @@
 
 (package! lispy)
 (package! lispyville)
+(package! flycheck-clj-kondo)
