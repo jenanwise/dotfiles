@@ -4,8 +4,9 @@
 (setq doom-localleader-key ",")
 
 (after! cider
-  ;; Popup repl to the right in vsplit
-  (set-popup-rule! "^\\*cider-repl" :side 'right :quit nil :size 0.5)
+  ;; Popup cider panels to the right in vsplit
+  (set-popup-rule! "^\\*cider-repl" :side 'right :quit nil :size 0.5 :modeline t)
+  (set-popup-rule! "^\\*cider-scratch\\*" :side 'right :quit nil :size 0.5 :modeline t)
 
   ;; fipp is much faster than the default printer
   (setq cider-print-fn 'fipp))
@@ -17,8 +18,8 @@
   ;; The default [ and ] are navigation, which makes
   ;; clojure difficult to type.
   (define-key lispy-mode-map (kbd "[") 'lispy-open-square)
-  (define-key lispy-mode-map (kbd "]") 'lispy-close-square))
-  (define-key lispy-mode-map (kbd "}") 'lispy-close-curly)
+  (define-key lispy-mode-map (kbd "]") 'lispy-close-square)
+  (define-key lispy-mode-map (kbd "}") 'lispy-close-curly))
 
 ;; Bigger font for tired eyes
 (setq doom-font (font-spec :family "Menlo" :size 20))
