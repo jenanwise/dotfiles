@@ -3,7 +3,8 @@
 USERPATH=\
 "$HOME/bin":\
 "$HOME/.local/bin":\
-"$HOME/.emacs.d/bin"
+"$HOME/.emacs.d/bin":\
+"$HOME/.cargo/bin"
 
 if /usr/local/bin/brew -v >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
