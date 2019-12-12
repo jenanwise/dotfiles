@@ -34,3 +34,8 @@
 
 ;; Turn on clj-kondo linting because it's great
 (require 'flycheck-clj-kondo)
+
+(after! rustic
+  (setq rustic-lsp-server 'rust-analyzer)
+  (set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.5 :select t)
+  )
