@@ -35,7 +35,30 @@
 ;; Turn on clj-kondo linting because it's great
 (require 'flycheck-clj-kondo)
 
+(defun rustic-cargo-run-current (&optional args-str)
+  "Run the current buffer if it's a src/bin/*.rs file; else default."
+  (interactive)
+  (let ((buf (buffer-file-name)))
+    (save-match-data
+      (let* ((args-suffix (and args-str (concat " " args-str)))
+             (suffix (if (string-match "src/bin/\\([a-zA-Z0-9_]+\\).rs" buf)
+                         (concat " --bin=" (match-string 1 buf) args-suffix)
+                       args-suffix))
+             (cmd (concat "cargo run" suffix)))
+        (rustic-run-cargo-command cmd)))))
+
+(defun rustic-cargo-run-current-with-args ()
+  "Run the current buffer if bin, else default, with prompted args."
+  (interactive)
+  (rustic-cargo-run-current (read-string "Enter args: ")))
+
 (after! rustic
   (setq rustic-lsp-server 'rust-analyzer)
   (set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.5 :select t)
+  (map! :map rustic-mode-map
+        :localleader
+        (:prefix ("b" . "build")
+          :desc "cargo run" "r" #'rustic-cargo-run-current
+          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args
+          ))
   )
