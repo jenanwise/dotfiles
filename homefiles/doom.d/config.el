@@ -54,7 +54,7 @@
 
 (after! rustic
   (setq rustic-lsp-server 'rust-analyzer)
-  (set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.5 :select t)
+  (set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.45 :select t)
   (map! :map rustic-mode-map
         :localleader
         (:prefix ("b" . "build")

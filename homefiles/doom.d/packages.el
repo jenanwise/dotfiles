@@ -10,3 +10,4 @@
 (package! lispyville)
 (package! flycheck-clj-kondo)
 (package! aggressive-indent)
+(package! doom-snippets :ignore t)

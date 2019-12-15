@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: derive debug
+# key: ddb
+# condition: t
+# --
+#[derive(Debug)]
