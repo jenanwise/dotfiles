@@ -52,13 +52,15 @@
   (interactive)
   (rustic-cargo-run-current (read-string "Enter args: ")))
 
+(setq lsp-rust-server 'rust-analyzer)
 (after! rustic
-  (setq rustic-lsp-server 'rust-analyzer)
-  (set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.45 :select t)
+  (set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.7 :select t)
   (map! :map rustic-mode-map
+        :leader
+        (:prefix ("c" . "code")
+          :desc "action!" "a" #'lsp-execute-code-action)
+
         :localleader
         (:prefix ("b" . "build")
           :desc "cargo run" "r" #'rustic-cargo-run-current
-          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args
-          ))
-  )
+          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args)))
