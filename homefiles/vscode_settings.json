@@ -32,17 +32,6 @@
   "workbench.colorTheme": "Dracula",
   "[csharp]": {},
   "gitlens.keymap": "none",
-  "clojureVSCode.autoStartNRepl": false,
-  "clojureVSCode.formatOnSave": false,
   "files.defaultLanguage": "markdown",
-  "rust.mode": "rls",
-  "rust-client.channel": "stable",
-  "rust.rustup": {
-    "toolchain": "stable-x86_64-apple-darwin",
-    "nightlyToolchain": "nightly-2019-03-10-x86_64-apple-darwin"
-  },
-  "rust.rls": {
-    "useRustfmt": true
-  },
   "python.formatting.provider": "black"
 }
