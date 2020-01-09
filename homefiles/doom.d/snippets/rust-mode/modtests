@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: modtests
+# key: modtests
+# condition: t
+# --
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn ${1:it_works}() {
+       $2
+    }
+}

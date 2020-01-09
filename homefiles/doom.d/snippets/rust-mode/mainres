@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Result from main
+# key: mainres
+# condition: t
+# --
+Result<(), Box<dyn std::error::Error>>
