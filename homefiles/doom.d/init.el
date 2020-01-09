@@ -16,7 +16,7 @@
        (company +childframe)          ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       (ivy +childframe)               ; a search engine for love and life
+       ivy
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -71,7 +71,7 @@
 
        :tools
        ;;ansible
-       (debugger +lsp)  ; FIXME stepping through code, to help you add bugs
+       ;;(debugger +lsp)  ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
@@ -82,7 +82,7 @@
        ;;gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
         +docsets)        ; ...or in Dash docsets locally
-       lsp
+       ;;lsp
        ;;macos             ; MacOS-specific commands
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
@@ -144,7 +144,8 @@
        ;;racket            ; a DSL for DSLs
        rest              ; Emacs as a REST client
        ;;ruby              ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       (rust +lsp) ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;(rust +lsp) ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       rust
                                         ;rust
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps

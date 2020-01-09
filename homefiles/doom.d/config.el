@@ -81,21 +81,27 @@
         :localleader
         (:prefix ("b" . "build")
           :desc "cargo run" "r" #'rustic-cargo-run-current
-          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args))
-  )
+          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args)))
 
-;; rust-analyzer is our preferred lsp server for rust. Unfortunately, it doesn't
-;; actually produce any diagnostics right now (whereas rls does). Instead, it
-;; relies on clients to run `cargo clippy` themselves. It comes with a vscode
-;; client that does this, which is also used by the vim lsp rust-analyzer
-;; client, but the emacs one (defined by the lsp-mode package) does not work
-;; with it.
-;;
-;; lsp mode and the doom emacs lsp integration selects the lsp-ui flycheck
-;; checker automatically. This checker relies on the lsp server to provide
-;; diagnostics. Since rust-analyzer does not provide diagnostics, we want to
-;; disable this checker for rust files. I do not see a way to set this locally,
-;; so we set it globally (just using `(add-hook 'rustic-mode-hook ...)` doesn't
-;; work, as it's immediately overwritten elsewhere).
 (after! lsp-ui
-  (setq lsp-prefer-flymake :none))
+  ;; rust-analyzer is our preferred lsp server for rust. Unfortunately, it doesn't
+  ;; actually produce any diagnostics right now (whereas rls does). Instead, it
+  ;; relies on clients to run `cargo clippy` themselves. It comes with a vscode
+  ;; client that does this, which is also used by the vim lsp rust-analyzer
+  ;; client, but the emacs one (defined by the lsp-mode package) does not work
+  ;; with it.
+  ;;
+  ;; lsp mode and the doom emacs lsp integration selects the lsp-ui flycheck
+  ;; checker automatically. This checker relies on the lsp server to provide
+  ;; diagnostics. Since rust-analyzer does not provide diagnostics, we want to
+  ;; disable this checker for rust files. I do not see a way to set this locally,
+  ;; so we set it globally (just using `(add-hook 'rustic-mode-hook ...)` doesn't
+  ;; work, as it's immediately overwritten elsewhere).
+  ;;
+  ;; lsp-prefer-flymake :none tells lsp-ui to not enable the lsp-ui flychecker.
+  ;; It's a poorly-named enum.
+  (setq lsp-prefer-flymake :none)
+
+  ;; lsp-ui pops up an almost-fullscreen doc when between parens,
+  ;; e.g. `dbg!(|)'. This disables it.
+  (advice-add #'lsp--lv-message :override #'ignore))
