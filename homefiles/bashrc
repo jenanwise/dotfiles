@@ -1,15 +1,15 @@
 ## Basic Environment Vars
 
 USERPATH=\
+"./node_modules/.bin":\
 "$HOME/bin":\
 "$HOME/.local/bin":\
 "$HOME/.emacs.d/bin":\
 "$HOME/.cargo/bin"
 
-if /usr/local/bin/brew -v >/dev/null; then
+if /usr/local/bin/brew --prefix >/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
-    EMACSPATH="$(/usr/local/bin/brew --prefix emacs)/bin"
-    BREWPATH="$BREWPREFIX/share/npm/bin":$EMACSPATH:"$BREWPREFIX/opt/coreutils/libexec/gnubin:$BREWPREFIX/opt/python/libexec/bin"
+    BREWPATH="$BREWPREFIX/share/npm/bin":"$BREWPREFIX/opt/coreutils/libexec/gnubin:$BREWPREFIX/opt/python/libexec/bin"
 else
     BREWPATH=""
 fi
@@ -45,7 +45,6 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # vi bindings
 set -o vi
-
 
 ## Bash completion
 
