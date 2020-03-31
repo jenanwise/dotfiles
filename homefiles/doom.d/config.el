@@ -113,7 +113,8 @@
   (interactive)
   (rustic-cargo-run-current (read-string "Enter args: ")))
 
-(setq lsp-rust-server 'rust-analyzer)
+(setq rustic-lsp-server 'rust-analyzer)
+
 (after! rustic
   ;;(set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.7 :select t)
   (map! :map rustic-mode-map
