@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: table_test
+# key: table_test
+# --
+#[test]
+fn test_${1:foo}() {
+    let cases = vec![
+        (${2:case_input}, ${3:case_expected}),
+    ];
+    for &(input, expected) in &cases {
+        assert_eq!(${4:foo}(input), expected, "{:?}", input);
+    }
+}
