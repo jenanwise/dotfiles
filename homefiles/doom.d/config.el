@@ -92,9 +92,50 @@
 (add-hook 'clojure-mode-hook #'subword-mode)
 (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+(add-hook 'rust-mode-hook #'paredit-mode)
+(add-hook 'rustic-mode-hook #'paredit-mode)
+
+;; By default, paredit puts a space before all delimeters.
+;; In Rust, we actually never want it to do that.
+(defun set-up-paredit-delimeter-prefs ()
+  (when (member major-mode '(rustic-mode rust-mode))
+    (add-to-list 'paredit-space-for-delimiter-predicates
+                 (lambda (_endp _delimeter) nil))))
+(add-hook 'paredit-mode-hook #'set-up-paredit-delimeter-prefs)
 
 
 ;; # Rust
+
+;; Teach paredit about `|foo|`, which Rust uses for lambdas.
+;; AFAICT I am the only person in the world using paredit+Rust...
+
+(defun paredit-open-or-close-vert (&optional n)
+  (interactive "P")
+  (cond
+   ;; in a string or comment, insert a normal literal "|"
+   ((or (paredit-in-comment-p) (paredit-in-string-p))
+    (insert ?\|))
+   ;; if the char at the point is a "|", just move
+   ;; forward, as we're likely at the closing "|"
+   ;; of a "|" pair. paredit's `paredit-doublequote'
+   ;; is smarter than this and tests to see if it's
+   ;; actually inside a string first, but we don't need
+   ;; to do that.
+   ((equal "|" (string (char-after (point))))
+    (forward-char))
+   ;; else we're in normal code; go ahead and insert a "||",
+   ;; which is done by calling `paredit-open-vert', which is
+   ;; defined when calling `define-paredit-pair'
+   (t
+    (paredit-open-vert))))
+(after! paredit
+  (define-paredit-pair ?\| ?\| "vert")
+  (define-key rustic-mode-map (kbd "|") #'paredit-open-or-close-vert))
+
+;; Somewhere in doom<>rustic<>lsp-mode<>rust-analyzer, something is messed up
+;; with the signature auto overlay. By default, it pops up a huge pane
+;; constantly while typing, so we disable it.
+(setq-hook! 'rustic-mode-hook lsp-signature-auto-activate nil)
 
 (defun rustic-cargo-run-current (&optional args-str)
   "Run the current buffer if it's a src/bin/*.rs file; else default."

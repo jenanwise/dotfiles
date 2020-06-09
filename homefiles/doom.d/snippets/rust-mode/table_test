@@ -8,6 +8,7 @@ fn test_${1:foo}() {
         (${2:case_input}, ${3:case_expected}),
     ];
     for &(input, expected) in &cases {
-        assert_eq!(${4:foo}(input), expected, "{:?}", input);
+        let found = ${4:foo}(input);
+        assert_eq!(found, expected, "{:?}", input);
     }
 }
