@@ -3,6 +3,9 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; Don't prompt when exiting
+(setq confirm-kill-emacs nil)
+
 ;; Use , as shortcut for SPC-m
 (setq doom-localleader-key ",")
 
