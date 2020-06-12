@@ -18,7 +18,7 @@ FILE_MAP = {
     'inputrc': '~/.inputrc',
     'psqlrc': '~/.psqlrc',
     'snippets': '~/.snippets',
-    'tmux.conf': '~/.tmux.conf',
+    'tmux.conf.local': '~/.tmux.conf.local',
     'vimrc': '~/.vimrc',
     'vim': '~/.vim',
 }
