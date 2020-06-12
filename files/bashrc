@@ -1,5 +1,4 @@
 ## Basic Environment Vars
-
 USERPATH=\
 "./node_modules/.bin":\
 "$HOME/bin":\
@@ -7,11 +6,13 @@ USERPATH=\
 "$HOME/.emacs.d/bin":\
 "$HOME/.cargo/bin"
 
-if /usr/local/bin/brew --prefix >/dev/null; then
+if /usr/local/bin/brew --prefix 2>/dev/null; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
     BREWPATH="$BREWPREFIX/share/npm/bin":"$BREWPREFIX/opt/coreutils/libexec/gnubin:$BREWPREFIX/opt/python/libexec/bin"
+    BREWBASHCOMPLETION="$BREWPREFIX/etc/bash_completion"
 else
     BREWPATH=""
+    BREWBASHCOMPLETION=""
 fi
 
 SYSPATH="/usr/local/bin"
@@ -49,9 +50,8 @@ set -o vi
 ## Bash completion
 
 # shellcheck source=/dev/null
-[[ -f ~/.bash_completion ]] && source ~/.bash_completion
-BREWBASHCOMPLETION="$BREWPREFIX/etc/bash_completion"
-if [ -f "$BREWBASHCOMPLETION" ]; then
+#[[ -f ~/.bash_completion ]] && source ~/.bash_completion
+if [[ -n "$BREWBASHCOMPLETION" && -f "$BREWBASHCOMPLETION" ]]; then
     # shellcheck source=/dev/null
     . "$BREWBASHCOMPLETION"
 fi
