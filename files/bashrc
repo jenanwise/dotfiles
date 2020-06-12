@@ -23,7 +23,7 @@ $BREWPATH:\
 $SYSPATH:\
 $PATH
 
-export EDITOR="vim"
+export EDITOR="emacs -nw"
 export GIT_PS1_SHOWDIRTYSTATE=
 export GIT_PS1_SHOWSTASHSTATE=1
 export LESS="-i -g -M -R -x4 -X -f -F -z-1"
