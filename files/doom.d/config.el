@@ -67,6 +67,12 @@
   (lispy-set-key-theme '(lispy c-digits paredit)))
 
 
+;; Train myself to use jk instead of escape to exit insert mode.
+(defun no-esc ()
+  (interactive)
+  (message "Use jk to exit insert mode!"))
+(map! :i "<escape>" #'no-esc)
+
 ;; # Clojure
 
 ;; Turn on clj-kondo linting because it's great
@@ -98,6 +104,9 @@
 (add-hook 'rust-mode-hook #'paredit-mode)
 (add-hook 'rustic-mode-hook #'paredit-mode)
 
+
+;; # Rust
+
 ;; By default, paredit puts a space before all delimeters.
 ;; In Rust, we actually never want it to do that.
 (defun set-up-paredit-delimeter-prefs ()
@@ -106,8 +115,6 @@
                  (lambda (_endp _delimeter) nil))))
 (add-hook 'paredit-mode-hook #'set-up-paredit-delimeter-prefs)
 
-
-;; # Rust
 
 ;; Teach paredit about `|foo|`, which Rust uses for lambdas.
 ;; AFAICT I am the only person in the world using paredit+Rust...
@@ -164,6 +171,10 @@
 ;; There is no reason to filter them, so just show them all.
 ;; https://github.com/emacs-lsp/lsp-ui/issues/443
 (setq lsp-ui-sideline-actions-kind-regex ".*")
+
+;; Allow turning on inlay hints. Without this settings,
+;; `lsp-rust-analyzer-inlay-hints-mode' doesn't actually do anything.
+(setq lsp-rust-analyzer-server-display-inlay-hints t)
 
 (after! rustic
   ;;(set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.7 :select t)
