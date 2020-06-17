@@ -39,6 +39,9 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+(when (eq system-type 'darwin)
+  (setq ns-use-native-fullscreen nil)
+  (setq ns-use-fullscreen-animation nil))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -96,10 +99,8 @@
 ;; Use paredit. smartparents is still not quite right.
 (add-hook 'cider-repl-mode-hook #'paredit-mode)
 (add-hook 'cider-repl-mode-hook #'subword-mode)
-(add-hook 'clojure-mode-hook #'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook #'paredit-mode)
 (add-hook 'clojure-mode-hook #'subword-mode)
-(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
 (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
 (add-hook 'rust-mode-hook #'paredit-mode)
 (add-hook 'rustic-mode-hook #'paredit-mode)
@@ -139,8 +140,7 @@
    (t
     (paredit-open-vert))))
 (after! paredit
-  (define-paredit-pair ?\| ?\| "vert")
-  (define-key rustic-mode-map (kbd "|") #'paredit-open-or-close-vert))
+  (define-paredit-pair ?\| ?\| "vert"))
 
 ;; Somewhere in doom<>rustic<>lsp-mode<>rust-analyzer, something is messed up
 ;; with the signature auto overlay. By default, it pops up a huge pane
@@ -187,7 +187,9 @@
         :localleader
         (:prefix ("b" . "build")
           :desc "cargo run" "r" #'rustic-cargo-run-current
-          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args)))
+          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args)
+
+        (define-key rustic-mode-map (kbd "|") #'paredit-open-or-close-vert)))
 
 ;; # Web
 (after! web-mode
