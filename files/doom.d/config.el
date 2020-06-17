@@ -178,7 +178,11 @@
 
 (after! rustic
   ;;(set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.7 :select t)
+  ;;
+  ;;
+;;(define-key rustic-mode-map (kbd "|") #'paredit-open-or-close-vert)
   (map! :map rustic-mode-map
+        :i "|" #'paredit-open-or-close-vert
         :leader
         (:prefix ("c" . "code")
           :desc "LSP code action" "a" #'lsp-execute-code-action
@@ -189,7 +193,7 @@
           :desc "cargo run" "r" #'rustic-cargo-run-current
           :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args)
 
-        (define-key rustic-mode-map (kbd "|") #'paredit-open-or-close-vert)))
+        ))
 
 ;; # Web
 (after! web-mode
