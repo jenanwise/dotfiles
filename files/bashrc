@@ -6,7 +6,7 @@ USERPATH=\
 "$HOME/.emacs.d/bin":\
 "$HOME/.cargo/bin"
 
-if /usr/local/bin/brew --prefix 2>/dev/null; then
+if /usr/local/bin/brew --prefix >/dev/null 2>&1; then
     BREWPREFIX="$(/usr/local/bin/brew --prefix)"
     BREWPATH="$BREWPREFIX/share/npm/bin":"$BREWPREFIX/opt/coreutils/libexec/gnubin:$BREWPREFIX/opt/python/libexec/bin"
     BREWBASHCOMPLETION="$BREWPREFIX/etc/bash_completion"
