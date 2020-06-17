@@ -17,10 +17,9 @@ FILE_MAP = {
     'gitignore': '~/.gitignore',
     'inputrc': '~/.inputrc',
     'psqlrc': '~/.psqlrc',
-    'snippets': '~/.snippets',
-    'tmux.conf.local': '~/.tmux.conf.local',
-    'vimrc': '~/.vimrc',
+    'starship.toml': '~/.config/starship.toml',
     'vim': '~/.vim',
+    'vimrc': '~/.vimrc',
 }
 
 
