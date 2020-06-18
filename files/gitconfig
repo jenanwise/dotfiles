@@ -25,8 +25,8 @@
     d = diff
     dom = diff origin/master
     rom = rebase -i origin/master
-    f = fetch
     set-personal = config user.email jenan@jenanwise.com
+    sp = set-personal
 [branch]
     autosetuprebase = always
 [push]
