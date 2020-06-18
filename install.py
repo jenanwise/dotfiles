@@ -18,6 +18,7 @@ FILE_MAP = {
     'inputrc': '~/.inputrc',
     'psqlrc': '~/.psqlrc',
     'starship.toml': '~/.config/starship.toml',
+    'tmux.conf': '~/.tmux.conf',
     'vim': '~/.vim',
     'vimrc': '~/.vimrc',
 }
