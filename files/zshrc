@@ -1,0 +1,78 @@
+setopt VI
+setopt APPEND_HISTORY
+setopt INTERACTIVE_COMMENTS
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_SPACE
+
+export HISTSIZE=100000
+export HISTFILESIZE=100000
+export LESS="--hilite-search --long-prompt --raw-control-chars --tabs=4 --no-init --force --quit-if-one-screen -z-1"
+
+# all-in on emacs
+export EDITOR="emacs -nw"
+export VISUAL="emacsclient -c"
+export ALTERNATE_EDITOR="emacs -nw"
+
+# set up `help` command
+autoload -Uz run-help
+unalias run-help
+alias help=run-help
+
+# pretty prompt
+#eval "$(starship init zsh)"
+
+export GIT_PS1_SHOWDIRTYSTATE=
+export GIT_PS1_SHOWSTASHSTATE=1
+MAINCOLOR=34;
+# if [ -n "`type -t __git_ps1`" ]; then
+#     PS1='\[\033[01;33m\]$(__git_ps1 "(%s) ")\[\033[01;${MAINCOLOR}m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$ '
+# else
+#     PS1='\[\033[01;${MAINCOLOR}m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$ '
+# fi
+
+# aliases
+alias c="clear"
+alias e="emacsclient -c"
+alias ls="/usr/local/bin/gls --color=auto"
+alias ll="ls -l"
+alias g="git"
+alias groot='cd "`git rev-parse --show-toplevel`"'
+alias ipy='poetry run ipython --TerminalInteractiveShell.editing_mode=vi --InteractiveShell.colors=linux --no-confirm-exit'
+alias node='env NODE_NO_READLINE=1 rlwrap node'
+alias pgctl='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/log/postgres.log'
+
+## fasd/autojump/z
+eval "$(fasd --init auto)"
+unalias s
+alias j="fasd_cd -d"
+alias jj="fasd_cd -d -i"
+
+# history search
+bindkey '^R' history-incremental-pattern-search-backward
+
+# allow backspace over lines
+bindkey -v '^?' backward-delete-char
+
+export PATH=\
+"./node_modules/.bin":\
+"$HOME/bin":\
+"$HOME/.local/bin":\
+"$HOME/.emacs.d/bin":\
+$PATH
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
+[[ -f ~/.keys_env ]] && source ~/.keys_env
+
+autoload -U colors && colors
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+PROMPT=\$vcs_info_msg_0_'%B%F{blue}%n@%m%F{white}:%F{cyan}%~%f%b$ '
+zstyle ':vcs_info:git*' formats "%B%F{yellow}(%b) "

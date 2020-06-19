@@ -10,7 +10,6 @@ import sys
 
 FILE_MAP = {
     'agignore': '~/.agignore',
-    'bashrc': '~/.bashrc',
     'bin': '~/bin',
     'doom.d': '~/.doom.d',
     'gitconfig': '~/.gitconfig',
@@ -21,6 +20,7 @@ FILE_MAP = {
     'tmux.conf': '~/.tmux.conf',
     'vim': '~/.vim',
     'vimrc': '~/.vimrc',
+    'zshrc': '~/.zshrc',
 }
 
 
