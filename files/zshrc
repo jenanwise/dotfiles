@@ -26,6 +26,8 @@ autoload -Uz run-help
 unalias run-help
 alias help=run-help
 
+autoload zmv
+
 # aliases
 alias c="clear"
 alias e="emacsclient -c"
@@ -75,4 +77,3 @@ else
 fi
 
 [[ -f ~/.keys_env ]] && source ~/.keys_env
-
