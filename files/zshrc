@@ -29,6 +29,7 @@ alias help=run-help
 autoload zmv
 
 # aliases
+alias bt="RUST_BACKTRACE=full cargo run"
 alias c="clear"
 alias e="emacsclient -c"
 alias ls="/usr/local/bin/gls --color=auto"
