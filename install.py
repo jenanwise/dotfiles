@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 
+OSX = sys.platform == 'darwin'
 FILE_MAP = {
     'agignore': '~/.agignore',
     'bin': '~/bin',
@@ -16,7 +17,7 @@ FILE_MAP = {
     'gitignore': '~/.gitignore',
     'inputrc': '~/.inputrc',
     'psqlrc': '~/.psqlrc',
-    'starship.toml': '~/.config/starship.toml',
+    'pypoetry': '~/Library/Application Support/pypoetry' if OSX else '~/.config/pypoetry',
     'tmux.conf': '~/.tmux.conf',
     'vim': '~/.vim',
     'vimrc': '~/.vimrc',

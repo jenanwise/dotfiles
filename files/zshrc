@@ -23,7 +23,7 @@ export ALTERNATE_EDITOR="emacs -nw"
 
 # set up `help` command
 autoload -Uz run-help
-unalias run-help
+unalias run-help &> /dev/null
 alias help=run-help
 
 autoload zmv
@@ -32,13 +32,17 @@ autoload zmv
 alias bt="RUST_BACKTRACE=full cargo run"
 alias c="clear"
 alias e="emacsclient -c"
-alias ls="/usr/local/bin/gls --color=auto"
-alias ll="ls -l"
 alias g="git"
 alias groot='cd "`git rev-parse --show-toplevel`"'
 alias ipy='poetry run ipython --TerminalInteractiveShell.editing_mode=vi --InteractiveShell.colors=linux --no-confirm-exit'
 alias node='env NODE_NO_READLINE=1 rlwrap node'
 alias pgctl='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/log/postgres.log'
+
+# mac-specific aliases
+if [ "$(uname 2> /dev/null)" = "Darwin" ]; then
+    alias ls="/usr/local/bin/gls --color=auto"
+    alias ll="ls -l"
+fi
 
 ## fasd/autojump/z
 eval "$(fasd --init auto)"
@@ -59,22 +63,26 @@ export PATH=\
 "$HOME/.emacs.d/bin":\
 $PATH
 
+if [[ -z "$SSH_CLIENT" ]]; then
+        prompt_user='%B%F{blue}%n'
+else
+        prompt_user='%B%F{green}%n@%m'
+fi
+
+autoload -U colors && colors
 if [[ $UID == 0 || $EUID == 0 ]]; then
     PROMPT='%B%F{red}%n@%m%F{white}:%F{cyan}%~%f%b$'
 else
-  if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-    autoload -Uz compinit
-    compinit
-    autoload -U colors && colors
+    if type brew &>/dev/null; then
+        FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+    fi
+    autoload -Uz compinit && compinit
     autoload -Uz vcs_info
-
     precmd_vcs_info() { vcs_info }
     precmd_functions+=( precmd_vcs_info )
     setopt prompt_subst
-    PROMPT=\$vcs_info_msg_0_'%B%F{blue}%n@%m%F{white}:%F{cyan}%~%f%b%(?..%F{red}[%?]%f)$ '
+    PROMPT=\$vcs_info_msg_0_'%f%b${prompt_user}%F{white}:%F{cyan}%~%f%b%(?..%F{red}[%?]%f)$ '
     zstyle ':vcs_info:git*' formats "%B%F{yellow}(%b) "
-  fi
 fi
 
 [[ -f ~/.keys_env ]] && source ~/.keys_env
