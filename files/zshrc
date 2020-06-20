@@ -30,6 +30,7 @@ autoload zmv
 
 # aliases
 alias bt="RUST_BACKTRACE=full cargo run"
+alias btr="RUST_BACKTRACE=full cargo run --release"
 alias c="clear"
 alias e="emacsclient -c"
 alias g="git"
