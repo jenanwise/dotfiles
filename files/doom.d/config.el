@@ -177,10 +177,6 @@
 (setq lsp-rust-analyzer-server-display-inlay-hints t)
 
 (after! rustic
-  ;;(set-popup-rule! "^\\*rustic-compilation*" :side 'bottom :size 0.7 :select t)
-  ;;
-  ;;
-;;(define-key rustic-mode-map (kbd "|") #'paredit-open-or-close-vert)
   (map! :map rustic-mode-map
         :i "|" #'paredit-open-or-close-vert
         :leader
@@ -191,9 +187,14 @@
         :localleader
         (:prefix ("b" . "build")
           :desc "cargo run" "r" #'rustic-cargo-run-current
-          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args)
+          :desc "cargo run with args" "R" #'rustic-cargo-run-current-with-args)))
 
-        ))
+;; lsp-flycheck checker is often broken -- it will show errors from
+;; the previously-saved file instead of the just-saved file. So, turn
+;; it off for now and prefer basic local clippy.
+(setq lsp-diagnostic-package :none)
+(after! flycheck
+  (push 'rustic-clippy flycheck-checkers))
 
 ;; # Web
 (after! web-mode
@@ -204,5 +205,7 @@
   (setq web-mode-auto-close-style 2)
 
   (setq web-mode-code-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  )
+  (setq web-mode-css-indent-offset 2))
+
+(after! hl-todo
+  (add-to-list 'hl-todo-keyword-faces '("XXX" error bold)))
