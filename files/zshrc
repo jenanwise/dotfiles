@@ -31,20 +31,20 @@ autoload zmv
 # aliases
 alias bt="RUST_BACKTRACE=full cargo run"
 alias btr="RUST_BACKTRACE=full cargo run --release"
-alias dtarp='docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin'
-alias clif="CHANNEL=release $HOME/src/rustc_codegen_cranelift/cargo.sh"
 alias c="clear"
+alias clif="CHANNEL=release $HOME/src/rustc_codegen_cranelift/cargo.sh"
+alias dtarp='docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin'
 alias e="emacsclient -c"
 alias g="git"
 alias groot='cd "`git rev-parse --show-toplevel`"'
 alias ipy='poetry run ipython --TerminalInteractiveShell.editing_mode=vi --InteractiveShell.colors=linux --no-confirm-exit'
 alias node='env NODE_NO_READLINE=1 rlwrap node'
 alias pgctl='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/log/postgres.log'
+alias ll="ls -l"
 
 # mac-specific aliases
 if [ "$(uname 2> /dev/null)" = "Darwin" ]; then
     alias ls="/usr/local/bin/gls --color=auto"
-    alias ll="ls -l"
 fi
 
 ## fasd/autojump/z
