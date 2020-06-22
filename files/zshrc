@@ -45,6 +45,8 @@ alias ll="ls -l"
 # mac-specific aliases
 if [ "$(uname 2> /dev/null)" = "Darwin" ]; then
     alias ls="/usr/local/bin/gls --color=auto"
+else
+    alias ls="ls --color=auto"
 fi
 
 ## fasd/autojump/z
