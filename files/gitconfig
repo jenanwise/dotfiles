@@ -6,7 +6,6 @@
     ui = always
 [core]
     excludesfile = ~/.gitignore
-    editor = vim
 
 [alias]
     s = status
@@ -38,6 +37,7 @@
 [user]
 	useconfigonly = true
 	name = Jenan Wise
+	email = jenan@jenanwise.com
 [diff]
 	compactionHeuristic = true
 [filter "lfs"]
