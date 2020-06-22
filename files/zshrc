@@ -31,6 +31,8 @@ autoload zmv
 # aliases
 alias bt="RUST_BACKTRACE=full cargo run"
 alias btr="RUST_BACKTRACE=full cargo run --release"
+alias dtarp='docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin'
+alias clif="CHANNEL=release $HOME/src/rustc_codegen_cranelift/cargo.sh"
 alias c="clear"
 alias e="emacsclient -c"
 alias g="git"
