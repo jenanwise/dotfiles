@@ -29,3 +29,4 @@ playbook.retry
 .yas-compiled-snippets.el
 .vscode
 .venv
+.dir-locals.el
